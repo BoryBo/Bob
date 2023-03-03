@@ -1,0 +1,9 @@
+{
+  "database": "bob",
+  "testDatabase": "bob_test",
+  "user": "boryanamincheva",
+  "password": "baniza",
+  "host": "localhost",
+  "dialect": "postgres",
+  "logging": false
+}
