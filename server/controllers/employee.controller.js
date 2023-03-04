@@ -63,7 +63,11 @@ exports.updateEmployee = async (req, res) => {
   let id = req.params.id;
 
   try {
-    let toBeUpdatedArr = await db.Employee.findAll({ where: { employee_id: id } });
+    let toBeUpdatedArr = await db.Employee.findAll({
+      where: {
+        employee_id: id
+      }
+    });
     let temp = toBeUpdatedArr[0];
     await temp.set({ ...req.body });
     await temp.save();
