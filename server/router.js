@@ -27,6 +27,5 @@ router.delete('/shift/:id', shiftCont.deleteShift);
 router.put('/shift/:id', shiftCont.updateShift);
 
 
-//
 
 module.exports = router;

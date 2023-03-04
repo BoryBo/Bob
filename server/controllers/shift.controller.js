@@ -17,6 +17,8 @@ exports.getAllShifts = async (req, res) => {
 
 exports.addShift = async (req, res) => {
   try {
+    // TODO REMOVE
+    console.log(req.body);
     let newShift = await db.ShiftType.create({
       date: req.body.date,
       peopleRequired: req.body.peopleRequired,

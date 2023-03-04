@@ -17,11 +17,12 @@ exports.getAllShiftTypes = async (req, res) => {
 
 exports.addShiftType = async (req, res) => {
   try {
+
     let newShiftType = await db.ShiftType.create({
-      short_name: req.body.short_name,
-      long_name: req.body.long_name,
-      starts_at: req.body.starts_at,
-      ends_at: req.body.ends_at
+      description: req.body.description,
+      abbreviation: req.body.abbreviation,
+      start: req.body.start,
+      end: req.body.end
     });
     res
       .status(201)

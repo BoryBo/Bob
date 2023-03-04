@@ -20,11 +20,42 @@ code {
 
 
 .App {
-outline: 1px solid blue;}
+outline: 1px solid blue;
+display: flex;
+height: 100%;
+}
 
 
 .Nav{
   height: 100%;
   width: 200px;
   outline: 1px solid black;
+}
+
+.nav-list{
+  list-style: none;
+  height: auto;
+  padding: 0;
+  width: 100%;
+}
+
+.nav-row:hover{
+  background-color: tomato;
+  cursor: pointer;
+
+}
+
+ .nav-row{
+  outline: 1 px solid gold;
+  color: gold;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  flex-direction: row;
+
+}
+
+
+a, u {
+  text-decoration: none;
 }

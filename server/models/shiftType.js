@@ -8,19 +8,19 @@ const ShiftType = (sequelize, DataTypes) => sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    short_name: {
+    abbreviation: {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    long_name: {
+    description: {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    starts_at: {
+    start: {
       type: DataTypes.TIME,
       allowNull: false,
     },
-    ends_at: {
+    end: {
       type: DataTypes.TIME,
       allowNull: false,
     },
@@ -28,7 +28,7 @@ const ShiftType = (sequelize, DataTypes) => sequelize.define(
       //Virtuals: https://sequelize.org/docs/v6/core-concepts/getters-setters-virtuals/
       type: DataTypes.VIRTUAL,
       get () {
-        return `${this.ends_at - this.starts_at}`;
+        return `${this.end - this.start}`;
       },
       set (value) {
         throw new Error('Do not try to set the `duration` value!');

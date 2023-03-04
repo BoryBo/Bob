@@ -90,7 +90,7 @@ const EmployeesTable = () => {
               />
             </td>
             <td>
-              <input type="text" defaultValue={employee.email}
+              <input type="email" defaultValue={employee.email}
                 onChange={(ev) => handleUpdate(employee.employee_id, 'email', ev.target.value)}
                 onBlur={(ev) => handleSave(employee.employee_id, 'email', ev.target.value)}
               />
@@ -109,7 +109,7 @@ const EmployeesTable = () => {
             <input type="text" name="surname" value={newEmployee.surname} onChange={handleInputChange} />
           </td>
           <td>
-            <input type="text" name="email" value={newEmployee.email} onChange={handleInputChange} />
+            <input type="email" name="email" value={newEmployee.email} onChange={handleInputChange} />
           </td>
           <td>
             <button onClick={handleAdd}>Add </button>
