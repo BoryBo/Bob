@@ -28,7 +28,7 @@ const ShiftType = (sequelize, DataTypes) => sequelize.define(
       //Virtuals: https://sequelize.org/docs/v6/core-concepts/getters-setters-virtuals/
       type: DataTypes.VIRTUAL,
       get () {
-        return `${this.end - this.start}`;
+        return `${parseInt(this.end) - parseInt(this.start)}`;
       },
       set (value) {
         throw new Error('Do not try to set the `duration` value!');

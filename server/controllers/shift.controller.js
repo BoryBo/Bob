@@ -20,8 +20,8 @@ exports.addShift = async (req, res) => {
     // TODO REMOVE
     console.log(req.body);
     let newShift = await db.Shift.create({
-      date: req.body.date,
-      people_required: req.body.peopleRequired,
+      day_number: req.body.day_number,
+      people_required: req.body.people_required,
       shift_type_id: req.body.shift_type_id,
 
       // TODO add a FK with shitftTypeId

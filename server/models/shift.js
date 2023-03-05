@@ -8,8 +8,8 @@ const Shift = (sequelize, DataTypes) => sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    date: {
-      type: DataTypes.DATE,
+    day_number: {
+      type: DataTypes.INTEGER,
       allowNull: true
     },
     people_required: {

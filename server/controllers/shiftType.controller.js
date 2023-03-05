@@ -24,6 +24,8 @@ exports.addShiftType = async (req, res) => {
       start: req.body.start,
       end: req.body.end
     });
+    console.log(newShiftType.duration);
+
     res
       .status(201)
       .send(newShiftType);
