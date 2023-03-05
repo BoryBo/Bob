@@ -61,6 +61,8 @@ function Redirect () {
             shiftTypes={shiftTypes}
             setShiftTypes={setShiftTypes}
             employees={employees}
+            shifts={shifts}
+            setShifts={setShifts}
           />}
         />
 

@@ -11,8 +11,8 @@ function Shifts ({ shifts, setShifts, shiftTypes }) {
       <div className="container">
         <div className="item row-header"></div>
         {(() => {
-          let out = [...Array(28).keys()].map(x => x + 1);
-          return out.map(x => <div key={x} className={`item item-${x}`} value={x}> {x}</div>);
+          let res = [...Array(28).keys()].map(x => x + 1);
+          return res.map(x => <div key={x} className={`item item-${x}`} value={x}> {x}</div>);
         })()}
 
         {shiftTypes.map(

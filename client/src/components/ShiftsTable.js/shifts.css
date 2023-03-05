@@ -1,23 +1,31 @@
 .container {
   display: grid;
   width:100%;
+  min-width: 600px;
   grid-template-columns:
       10% repeat(28, 4fr);
-  grid-row-gap:3px;
+  grid-row-gap:1px;
   justify-items: center;
   border:1px solid black;
+  margin: 5px;
+
 }
+/* .container > * {
+  background-color: #0ec398;
+} */
 
 .inp {
-  width:50%;
+  width:90%;
   justify-content: center;
   text-align: center;
   background: none;
-  border:none;
+  border:1px solid gray;
+  color:aquamarine;
+
 }
 
 .item {
+  color:aquamarine;
   align-self: center;
   justify-items: center;
-
 }

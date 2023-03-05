@@ -2,10 +2,8 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import helper from '../helper';
 
-function ShiftTypes ({ shiftTypes, setShiftTypes }) {
+function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
   const [newShiftType, setNewShiftType] = useState({ description: '', abbreviation: '', start: '', end: '' });
-
-
 
   useEffect(() => {
     fetch('http://localhost:4000/shift-types')
@@ -21,99 +19,45 @@ function ShiftTypes ({ shiftTypes, setShiftTypes }) {
       .then(() => setShiftTypes(shiftTypes.filter(shift => shift.shift_type_id !== id)))
       .catch(error => console.error(error));
   };
-  //TODO: not working
 
+  async function addShift (day_number, shift_type_id) {
+    // This function adds a shift with people_required = 0 by default
+    let shift = await fetch('http://localhost:4000/shift', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        day_number: day_number,
+        people_required: 0,
+        shift_type_id: shift_type_id,
+      }),
+    })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+    return shift;
+  }
 
   async function handleAdd () {
+    // Adding a new shift type
     const newShiftTypeId = await fetch('http://localhost:4000/shift-type', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      // the following line is sending out an object representing a single ShiftType (from a react state)
-      // e.g. { "abbreviation": "ld", "description": "long day", "start": "12:54:00", "end": "22:54:00"}
       body: JSON.stringify(newShiftType),
     })
       .then(response => response.json());
-    // in the original code from this article the next line was this.shiftType = shiftType
     let tmpShiftType = newShiftTypeId;
     let updatedList = [...shiftTypes, tmpShiftType];
     setShiftTypes(helper.sortShiftTypeByName(updatedList));
 
-    //Now I would like to create 28 records in another table passing the shift_type_id as foreign key
-    for (let i = 1; i <= 28; i++) {
-      const shifts = await fetch('http://localhost:4000/shift', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          day_number: i,
-          people_required: 0,
-          shift_type_id: tmpShiftType.shift_type_id,
-        }),
-      });
-    }
+    // Creating 28 placeholder shifts associated with the new shift type
+    // so that the shift table is pre-populated:  
+    let newShifts = [...Array(28).keys()].map(x => x + 1);
+    newShifts = await Promise.all(newShifts.map(async (shift) => {
+      return addShift(shift, tmpShiftType.shift_type_id);
+    }));
+    //updating shifts:
+    setShifts([...shifts, ...newShifts]);
     setNewShiftType({ description: '', abbreviation: '', start: '', end: '' });
   }
-
-  // const handleAdd = () => {
-  //   // Create new shift-type
-  //   fetch('http://localhost:4000/shift-type', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(newShiftType),
-  //   })
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       let bubu = data;
-  //       const dataIds = bubu.map(data => data.shift_type_id);
-  //       let out = fetch('http://localhost:4000/shift', {
-  //         method: 'POST',
-  //         headers: { 'Content-Type': 'application/json' },
-  //         body: JSON.stringify({
-  //           // shift_id:"",
-  //           people_required: 42,
-  //           shift_type_id: dataIds[0],
-  //         }),
-  //       });
-  //       return out;
-  //     });
-  // .then(response => response.json())
-  // .then(data => {
-  //   this.data = data;
-  // });
-
-
-  // .then(data => data.map(x => x.shift_type_id))
-  // .then(shift_type_ids => {
-  //   shift_type_ids.forEach(x => {
-  //     for (let i = 1; i <= 28; i++) {
-  //       fetch('http://localhost:4000/shift', {
-  //         method: 'POST',
-  //         headers: { 'Content-Type': 'application/json' },
-  //         body: JSON.stringify({
-  //           // shift_id:"",
-  //           people_required: 42,
-  //           shift_type_id: x,
-  //         }),
-  //       })
-  //         .then(response => response.json())
-  //         .then(result => {
-  //           // Handle the result of the second request
-  //           console.log('result:', result);
-  //         })
-  //         .catch(error => console.error(error));
-  //     }
-  //   });
-  // })
-
-
-
-  //   .then(data => {
-  //     let updatedList = [...shiftTypes, data];
-  //     setShiftTypes(helper.sortShiftTypeByName(updatedList));
-  //   })
-  //   .catch(error => console.error(error));
-
-  // setNewShiftType({ description: '', abbreviation: '', start: '', end: '' });
-  // };
 
   const handleInputChange = (ev) => {
     const { name, value } = ev.target;
