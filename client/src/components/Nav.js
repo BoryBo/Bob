@@ -13,7 +13,7 @@ function Nav () {
   return (
     <nav className='Nav'>
       <ul className='nav-list'>
-      
+
         <li className='nav-row'>
           <Link to="/">
             <AiFillHome />
@@ -29,16 +29,16 @@ function Nav () {
         </li>
 
         <li className='nav-row'>
-          <Link to="/shifts">
+          <Link to="/shift-types">
             <AiFillClockCircle />
-            <p>Shifts</p>
+            <p>Shift Types</p>
           </Link>
         </li>
 
         <li className='nav-row'>
-          <Link to="/allocations">
+          <Link to="/shifts">
             <IoIosCreate />
-            <p>Allocations</p>
+            <p>Shifts</p>
           </Link>
         </li>
 

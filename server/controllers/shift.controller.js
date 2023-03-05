@@ -3,7 +3,7 @@ const db = require('../models');
 
 exports.getAllShifts = async (req, res) => {
   try {
-    let shifts = await db.ShiftType.findAll();
+    let shifts = await db.Shift.findAll();
     res
       .status(200)
       .send(shifts);
@@ -19,9 +19,12 @@ exports.addShift = async (req, res) => {
   try {
     // TODO REMOVE
     console.log(req.body);
-    let newShift = await db.ShiftType.create({
+    let newShift = await db.Shift.create({
       date: req.body.date,
-      peopleRequired: req.body.peopleRequired,
+      people_required: req.body.peopleRequired,
+      shift_type_id: req.body.shift_type_id,
+
+      // TODO add a FK with shitftTypeId
     });
     res
       .status(201)
@@ -40,7 +43,7 @@ exports.deleteShift = async (req, res) => {
 
   try {
     // await bd.Employee.deleteOne()(req.params.id);
-    await db.ShiftType.destroy({
+    await db.Shift.destroy({
       where: { shift_id: id }
     });
     res

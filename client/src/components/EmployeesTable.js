@@ -1,22 +1,18 @@
 import React from 'react';
 // import * as apiService from '../apiService.js';
 import { useState, useEffect } from 'react';
+import helper from '../helper';
 
-
-const EmployeesTable = () => {
-  const [employees, setEmployees] = useState([]);
+const EmployeesTable = ({ employees, setEmployees }) => {
   const [newEmployee, setNewEmployee] = useState({ name: '', surname: '', email: '' });
-
-  const sortByName = x => x.sort((a, b) => a.name.localeCompare(b.name));
-
 
 
   useEffect(() => {
     fetch('http://localhost:4000/employees')
       .then(response => response.json())
-      .then(data => setEmployees(sortByName(data)))
+      .then(data => setEmployees(helper.sortEmployeesByName(data)))
       .catch(error => console.error(error));
-  }, []);
+  }, [setEmployees]);
 
   const handleDelete = (id) => {
     fetch(`http://localhost:4000/employees/${id}`, {
@@ -35,7 +31,7 @@ const EmployeesTable = () => {
       .then(response => response.json())
       .then(data => {
         let updatedList = [...employees, data];
-        setEmployees(sortByName(updatedList));
+        setEmployees(helper.sortEmployeesByName(updatedList));
       })
       .catch(error => console.error(error));
 
@@ -50,7 +46,7 @@ const EmployeesTable = () => {
   const handleUpdate = (id, field, value) => {
     let updatedEmployees = [...employees];
     updatedEmployees = updatedEmployees.map(emp => emp.employee_id === id ? { ...emp, [field]: value } : emp);
-    setEmployees(sortByName(updatedEmployees));
+    setEmployees(helper.sortEmployeesByName(updatedEmployees));
   };
 
   const handleSave = (id, field, value) => {

@@ -1,21 +1,18 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import helper from '../helper';
 
-
-function Allocations () {
-  const [shiftTypes, setShiftTypes] = useState([]);
+function ShiftTypes ({ shiftTypes, setShiftTypes }) {
   const [newShiftType, setNewShiftType] = useState({ description: '', abbreviation: '', start: '', end: '' });
-
-  const sortByName = x => x.sort((a, b) => a.description.localeCompare(b.description));
 
 
 
   useEffect(() => {
     fetch('http://localhost:4000/shift-types')
       .then(response => response.json())
-      .then(data => setShiftTypes(sortByName(data)))
+      .then(data => setShiftTypes(helper.sortShiftTypeByName(data)))
       .catch(error => console.error(error));
-  }, []);
+  }, [setShiftTypes]);
 
   const handleDelete = (id) => {
     fetch(`http://localhost:4000/shift-type/${id}`, {
@@ -26,17 +23,37 @@ function Allocations () {
   };
 
   const handleAdd = () => {
+    // Create new shift-type
     fetch('http://localhost:4000/shift-type', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newShiftType),
     })
-      .then(response => response.json())
+      .then(response => {
+        let out = response.json();
+        console.log(out);
+        // Create 28 new empty shifts
+        // for (let i = 1; i <= 28; i++) {
+        //   fetch('http://localhost:4000/shift', {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({
+        //       // shift_id:"",
+        //       people_required: 42,
+        //       shift_type_id: out['shift_type_id'],
+        //     }),
+        //   })
+        //     .then(r => r.json())
+        //     .catch(error => console.error(error));
+        // }
+        return out;
+      })
       .then(data => {
         let updatedList = [...shiftTypes, data];
-        setShiftTypes(sortByName(updatedList));
+        setShiftTypes(helper.sortShiftTypeByName(updatedList));
       })
       .catch(error => console.error(error));
+
 
     setNewShiftType({ description: '', abbreviation: '', start: '', end: '' });
   };
@@ -49,7 +66,7 @@ function Allocations () {
   const handleUpdate = (id, field, value) => {
     let updatedShifts = [...shiftTypes];
     updatedShifts = updatedShifts.map(shift => shift.shift_type_id === id ? { ...shift, [field]: value } : shift);
-    setShiftTypes(sortByName(updatedShifts));
+    setShiftTypes(helper.sortShiftTypeByName(updatedShifts));
   };
 
   const handleSave = (id, field, value) => {
@@ -76,7 +93,7 @@ function Allocations () {
       <tbody>
         {shiftTypes.map(shiftType => (
 
-          <tr key={shiftType.shiftType_id}>
+          <tr key={shiftType.shift_type_id}>
             <td>
               <input type="text" defaultValue={shiftType.description}
                 onChange={(ev) => handleUpdate(shiftType.shift_type_id, 'description', ev.target.value)}
@@ -130,4 +147,4 @@ function Allocations () {
 };
 
 
-export default Allocations;
+export default ShiftTypes;

@@ -1,0 +1,22 @@
+.container {
+  display: grid;
+  width:400px;
+  grid-template-columns:
+      30% repeat(7, 10%);
+  grid-row-gap:3px;
+  justify-items: center;
+}
+
+.inp {
+  width:50%;
+  justify-content: center;
+  text-align: center;
+  background: none;
+  border:none;
+}
+
+.item {
+  align-self: center;
+  justify-items: center;
+
+}

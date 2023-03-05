@@ -1,59 +1,64 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import helper from '../helper';
 
+function Shifts ({ shifts, setShifts, shiftTypes }) {
+  const [newShift, setNewShift] = useState({ date: '', peopleRequired: '' });
 
-function Shifts () {
-  const [shiftTypes, setShiftTypes] = useState([]);
-  const [newShiftType, setNewShiftType] = useState({ description: '', abbreviation: '', start: '', end: '' });
-
-  const sortByName = x => x.sort((a, b) => a.description.localeCompare(b.description));
+  // const helper.sortShiftByDate = x => x.sort((a, b) => new Date(a.date) - new Date(b.date));
 
 
 
   useEffect(() => {
-    fetch('http://localhost:4000/shift-types')
+    fetch('http://localhost:4000/shifts')
       .then(response => response.json())
-      .then(data => setShiftTypes(sortByName(data)))
+      .then(data => setShifts(helper.sortShiftByDate(data)))
       .catch(error => console.error(error));
-  }, []);
+  }, [setShifts]);
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:4000/shift-type/${id}`, {
+    fetch(`http://localhost:4000/shift/${id}`, {
       method: 'DELETE',
     })
-      .then(() => setShiftTypes(shiftTypes.filter(shift => shift.shift_type_id !== id)))
+      .then(() => setShifts(shifts.filter(shift => shift.shift_id !== id)))
       .catch(error => console.error(error));
   };
 
   const handleAdd = () => {
-    fetch('http://localhost:4000/shift-type', {
+    fetch('http://localhost:4000/shift', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newShiftType),
+      body: JSON.stringify(newShift),
     })
       .then(response => response.json())
       .then(data => {
-        let updatedList = [...shiftTypes, data];
-        setShiftTypes(sortByName(updatedList));
+        //TODO:
+
+        // if (Date.parse(data.date) > Date.now()) {
+        let updatedList = [...shifts, data];
+        setShifts(helper.sortShiftByDate(updatedList));
+        // }else{
+        //   alert ('Invalid input. Date cannot be in the past. ');
+        // }
       })
       .catch(error => console.error(error));
 
-    setNewShiftType({ description: '', abbreviation: '', start: '', end: '' });
+    setNewShift({ date: '', peopleRequired: '' });
   };
 
   const handleInputChange = (ev) => {
     const { name, value } = ev.target;
-    setNewShiftType({ ...newShiftType, [name]: value });
+    setNewShift({ ...newShift, [name]: value });
   };
 
   const handleUpdate = (id, field, value) => {
-    let updatedShifts = [...shiftTypes];
-    updatedShifts = updatedShifts.map(shift => shift.shift_type_id === id ? { ...shift, [field]: value } : shift);
-    setShiftTypes(sortByName(updatedShifts));
+    let updatedShifts = [...shifts];
+    updatedShifts = updatedShifts.map(shift => shift.shift_id === id ? { ...shift, [field]: value } : shift);
+    setShifts(helper.sortShiftByDate(updatedShifts));
   };
 
   const handleSave = (id, field, value) => {
-    fetch(`http://localhost:4000/shift-type/${id}`, {
+    fetch(`http://localhost:4000/shift/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ [field]: value }),
@@ -66,59 +71,39 @@ function Shifts () {
     <table>
       <thead>
         <tr>
-          <th>Type</th>
-          <th>Abbreviation</th>
-          <th>Start</th>
-          <th>End</th>
+          <th>Date</th>
+          <th>Number of shifts needed</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        {shiftTypes.map(shiftType => (
+        {shifts.map(shift => (
 
-          <tr key={shiftType.shift_type_id}>
+          <tr key={shift.shift_id}>
             <td>
-              <input type="text" defaultValue={shiftType.description}
-                onChange={(ev) => handleUpdate(shiftType.shift_type_id, 'description', ev.target.value)}
-                onBlur={(ev) => handleSave(shiftType.shift_type_id, 'description', ev.target.value)}
+              <input type="text" defaultValue={shift.date}
+                onChange={(ev) => handleUpdate(shift.shift_id, 'date', ev.target.value)}
+                onBlur={(ev) => handleSave(shift.shift_id, 'date', ev.target.value)}
               />
             </td>
             <td>
-              <input type="text" defaultValue={shiftType.abbreviation}
-                onChange={(ev) => handleUpdate(shiftType.shift_type_id, 'abbreviation', ev.target.value)}
-                onBlur={(ev) => handleSave(shiftType.shift_type_id, 'abbreviation', ev.target.value)}
+              <input type="text" defaultValue={shift.peopleRequired}
+                onChange={(ev) => handleUpdate(shift.shift_id, 'peopleRequired', ev.target.value)}
+                onBlur={(ev) => handleSave(shift.shift_id, 'peopleRequired', ev.target.value)}
               />
             </td>
             <td>
-              <input type="time" defaultValue={shiftType.start}
-                onChange={(ev) => handleUpdate(shiftType.shift_type_id, 'start', ev.target.value)}
-                onBlur={(ev) => handleSave(shiftType.shift_type_id, 'start', ev.target.value)}
-              />
-            </td>
-            <td>
-              <input type="time" defaultValue={shiftType.end}
-                onChange={(ev) => handleUpdate(shiftType.shift_type_id, 'end', ev.target.value)}
-                onBlur={(ev) => handleSave(shiftType.shift_type_id, 'end', ev.target.value)}
-              />
-            </td>
-            <td>
-              <button onClick={() => handleDelete(shiftType.shift_type_id)}>X</button>
+              <button onClick={() => handleDelete(shift.shift_id)}>X</button>
             </td>
           </tr>
         ))}
 
         <tr>
           <td>
-            <input type="text" name="description" value={newShiftType.description} onChange={handleInputChange} />
+            <input type="date" name="date" value={newShift.date} onChange={handleInputChange} />
           </td>
           <td>
-            <input type="text" name="abbreviation" value={newShiftType.abbreviation} onChange={handleInputChange} />
-          </td>
-          <td>
-            <input type="time" name="start" value={newShiftType.start} onChange={handleInputChange} />
-          </td>
-          <td>
-            <input type="time" name="end" value={newShiftType.end} onChange={handleInputChange} />
+            <input type="number" name="peopleRequired" value={newShift.peopleRequired} onChange={handleInputChange} />
           </td>
           <td>
             <button onClick={handleAdd}>Add </button>

@@ -10,11 +10,11 @@ const Shift = (sequelize, DataTypes) => sequelize.define(
     },
     date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
-    peopleRequired: {
+    people_required: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     }
   },
   {

@@ -20,8 +20,13 @@ db.Employee = require('./employee')(sequelize, Sequelize.DataTypes);
 db.Shift = require('./shift')(sequelize, Sequelize.DataTypes);
 db.ShiftType = require('./shiftType')(sequelize, Sequelize.DataTypes);
 
-db.Shift.belongsToMany(db.Employee, { through: 'employees_shifts', onDelete: 'cascade'});//!see isssues
-db.ShiftType.hasMany(db.Shift);
+db.Shift.belongsToMany(db.Employee, { through: 'employees_shifts', onDelete: 'cascade' });//!see isssues
+db.ShiftType.hasMany(db.Shift, {
+  foreignKey: {
+    name: 'shift_type_id', // name used in the API (postman)
+    field: 'shift_type_id' // name used in the DB
+  }
+});
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
