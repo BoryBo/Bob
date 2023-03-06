@@ -2,6 +2,7 @@ const router = require('express').Router();
 const employeeCont = require('./controllers/employee.controller');
 const shiftTypeCont = require('./controllers/shiftType.controller');
 const shiftCont = require('./controllers/shift.controller');
+// const rotaCont = require('./controllers/rota.controller');
 
 
 router.get('/', (req, res) => {
@@ -26,6 +27,8 @@ router.post('/shift', shiftCont.addShift);
 router.delete('/shift/:id', shiftCont.deleteShift);
 router.put('/shift/:id', shiftCont.updateShift);
 
+//test methods
+// router.get('/enhancedShifts', rotaCont.expandShiftsWithShiftType);
 
 
 module.exports = router;
