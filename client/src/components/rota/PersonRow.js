@@ -18,11 +18,12 @@ function PersonRow ({ employee }) {
       {days.map(day =>
         day ?
           <PersonShift
+
             key={day['shifts.shift_id']}
             shift={day}
           />
           :
-          <p key={Math.floor(Math.random() * 100000)}>Off</p>
+          <p className='shift' key={Math.floor(Math.random() * 100000)}>Off</p>
       )}
 
     </>

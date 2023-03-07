@@ -8,7 +8,7 @@ import Rota from './rota/Rota';
 import Shifts from './shiftsTable/Shifts';
 
 
-function Redirect () {
+function Redirect ({ setSelectedTab }) {
   const [employees, setEmployees] = useState([]);
   const [shiftTypes, setShiftTypes] = useState([]);
   const [shifts, setShifts] = useState([]);

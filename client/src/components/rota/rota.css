@@ -1,4 +1,4 @@
-.container {
+.grid {
   display: grid;
   width:100%;
   min-width: 600px;
@@ -12,6 +12,7 @@
 
 
   grid-row-gap:1px;
+  grid-column-gap:5px ;
   justify-items: center;
   border:1px solid black;
   margin: 5px;
@@ -26,13 +27,16 @@
 }
 
 .shift {
-  width:90%;
+  width:85%;
   justify-content: center;
   text-align: center;
   background: none;
   border:1px solid gray;
-  color:aquamarine;
-
+  color:rgb(0, 0, 0);
+  align-self: center;
+  justify-items: center;
+  padding: 10px;
+  margin: 10px;
 }
 .row-header{
   color:rgb(183, 26, 26);
@@ -48,13 +52,7 @@
 
 }
 
-.shift {
-  color:rgb(0, 0, 0);
-  align-self: center;
-  justify-items: center;
-  border: 1px solid black;
-  padding: 10px;
-}
+
 
 .LD{
   background-color: green;
@@ -65,4 +63,8 @@
 }
 .N{
   background-color: rgb(49, 49, 211);
+}
+
+.PersonRow{
+  border: 1px solid tomato;
 }

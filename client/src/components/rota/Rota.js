@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './rota.css';
 import PersonRow from './PersonRow';
+// import helper from '../../helper';
 
 function Rota () {
   const [rota, setRota] = useState([]);
@@ -16,6 +17,9 @@ function Rota () {
       })
       .then(response => response.json())
       .then(data => {
+        //TODO:sort by name
+        // setRota(helper.sortEmployeesByName(data));
+       // console.log(data);
         setRota(data);
       })
 
@@ -33,11 +37,11 @@ function Rota () {
 
 
   if (error) {
-    return <h1 style={{"color": "red"}}> {error}</h1>;
+    return <h1 style={{ "color": "red" }}> {error}</h1>;
   }
   return (
     <>
-      <div className="container">
+      <div className="grid">
         <div className="item row-header"></div>
         {createDays()}
 

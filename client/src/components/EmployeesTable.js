@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import helper from '../helper';
 import { AiOutlineUserDelete } from 'react-icons/ai';
 import { AiOutlineUserAdd } from 'react-icons/ai';
+import './employeesTable.css';
 
 
 const EmployeesTable = ({ employees, setEmployees }) => {
@@ -63,9 +64,9 @@ const EmployeesTable = ({ employees, setEmployees }) => {
   };
 
   return (
-    <table>
+    <table className='emp-table'>
       <thead>
-        <tr>
+        <tr className='table-head'>
           <th>Name</th>
           <th>Surname</th>
           <th>Email</th>
@@ -100,7 +101,7 @@ const EmployeesTable = ({ employees, setEmployees }) => {
           </tr>
         ))}
 
-        <tr>
+        <tr className='add-form'>
           <td>
             <input type="text" name="name" value={newEmployee.name} onChange={handleInputChange} />
           </td>
