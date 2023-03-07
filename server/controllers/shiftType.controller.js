@@ -24,7 +24,6 @@ exports.addShiftType = async (req, res) => {
       start: req.body.start,
       end: req.body.end
     });
-    console.log(newShiftType.duration);
 
     res
       .status(201)
@@ -42,7 +41,6 @@ exports.deleteShiftType = async (req, res) => {
   let id = req.params.id;
 
   try {
-    // await bd.Employee.deleteOne()(req.params.id);
     await db.ShiftType.destroy({
       where: { shift_type_id: id }
     });

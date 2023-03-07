@@ -2,6 +2,9 @@ import React from 'react';
 // import * as apiService from '../apiService.js';
 import { useState, useEffect } from 'react';
 import helper from '../helper';
+import { AiOutlineUserDelete } from 'react-icons/ai';
+import { AiOutlineUserAdd } from 'react-icons/ai';
+
 
 const EmployeesTable = ({ employees, setEmployees }) => {
   const [newEmployee, setNewEmployee] = useState({ name: '', surname: '', email: '' });
@@ -92,7 +95,7 @@ const EmployeesTable = ({ employees, setEmployees }) => {
               />
             </td>
             <td>
-              <button onClick={() => handleDelete(employee.employee_id)}>X</button>
+              <button className='delete-btn' onClick={() => handleDelete(employee.employee_id)}><AiOutlineUserDelete /></button>
             </td>
           </tr>
         ))}
@@ -108,7 +111,7 @@ const EmployeesTable = ({ employees, setEmployees }) => {
             <input type="email" name="email" value={newEmployee.email} onChange={handleInputChange} />
           </td>
           <td>
-            <button onClick={handleAdd}>Add </button>
+            <button className='add-btn' onClick={handleAdd}> <AiOutlineUserAdd /> </button>
           </td>
         </tr>
       </tbody>

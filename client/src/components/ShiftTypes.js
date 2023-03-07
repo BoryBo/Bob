@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import helper from '../helper';
+import { RiDeleteBin6Line } from 'react-icons/ri';
+import { MdDownloadDone } from 'react-icons/md';
 
 function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
   const [newShiftType, setNewShiftType] = useState({ description: '', abbreviation: '', start: '', end: '' });
@@ -21,7 +23,7 @@ function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
   };
 
   async function addShift (day_number, shift_type_id) {
-    // This function adds a shift with people_required = 0 by default
+    // This function adds a shift with people_required = 0 by default:
     let shift = await fetch('http://localhost:4000/shift', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -37,7 +39,7 @@ function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
   }
 
   async function handleAdd () {
-    // Adding a new shift type
+    // Adding a new shift type:
     const newShiftTypeId = await fetch('http://localhost:4000/shift-type', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -49,7 +51,7 @@ function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
     setShiftTypes(helper.sortShiftTypeByName(updatedList));
 
     // Creating 28 placeholder shifts associated with the new shift type
-    // so that the shift table is pre-populated:  
+    // so that the shift table is pre-populated:
     let newShifts = [...Array(28).keys()].map(x => x + 1);
     newShifts = await Promise.all(newShifts.map(async (shift) => {
       return addShift(shift, tmpShiftType.shift_type_id);
@@ -120,7 +122,7 @@ function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
               />
             </td>
             <td>
-              <button onClick={() => handleDelete(shiftType.shift_type_id)}>X</button>
+              <button className='delete-btn' onClick={() => handleDelete(shiftType.shift_type_id)}><RiDeleteBin6Line /></button>
             </td>
           </tr>
         ))}
@@ -139,7 +141,7 @@ function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
             <input type="time" name="end" value={newShiftType.end} onChange={handleInputChange} />
           </td>
           <td>
-            <button onClick={handleAdd}>Add </button>
+            <button className='add-btn' onClick={handleAdd}><MdDownloadDone /> </button>
           </td>
         </tr>
       </tbody>
