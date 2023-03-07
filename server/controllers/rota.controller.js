@@ -70,12 +70,10 @@ function prioritise (employees, shiftType) {
   comparisonEmployees = comparisonEmployees
     .filter(x => x.restedEnough)
     .filter(x => x.hours < MAXHOURS)
-    .sort((a, b) => a.hours - b.hours)
     .map(x => x.employee_id);
   return comparisonEmployees;
 }
 
-//TODO: NUMBERROTA
 // async function generateRandomRotas (numRotas) {
 
 async function generateRandomRotas () {
@@ -95,13 +93,16 @@ async function generateRandomRotas () {
 
       // loop through each array of shifts in a day
       days[dayNumber].forEach(shiftType => {
-        let availablePeople = employees.filter(x => prioritise(employees, shiftType).includes(x.employee_id));
+        let availablePeople = employees
+          .filter(x => prioritise(employees, shiftType).includes(x.employee_id))
+          .sort((a, b) => a.hours - b.hours);
+
+        // console.log(availablePeople);
         let toBeAssigned = [];
-        try {
-          toBeAssigned = availablePeople.slice(0, shiftType['shifts.people_required']);
-        } catch (err) {
-          console.log('Error related with the number of available people');
+        if (availablePeople.length < shiftType['shifts.people_required']) {
+          throw new Error('There is an issue with the number of available employees. Check you hired enough');
         }
+        toBeAssigned = availablePeople.slice(0, shiftType['shifts.people_required']);
 
         // Here goes the logic to update the shifts
         shiftType['assignedEmployees'] = toBeAssigned;
@@ -114,7 +115,6 @@ async function generateRandomRotas () {
             x.hours = x.hours + shiftDuration(shiftType.start, shiftType.end).delta;
           });
       });
-      // TODO: evaluate this rota against existing one
     }
     employees.forEach(x => {
       if (x.shifts.length > 0) {
@@ -126,38 +126,26 @@ async function generateRandomRotas () {
   }
   return bestRota;
 }
-
+//prints the rota
 // async function logPromiseResult () {
 //   console.log(await generateRandomRotas(1));
 // }
 // logPromiseResult();
 
-// function scoreRota (rota) {
-//   let score = 0;
-//   return score;
-// }
-
-// function improveRota (rota) {
-//   return 0;
-// }
-
-// function saveRota () {
-//   return 0;
-// }
-
 
 exports.getRota = async (req, res) => {
   try {
     let rota = await generateRandomRotas();
-    console.log(rota);
     res
       .status(200)
       .send(rota);
+    // .send({ data: rota, error: null });// handle in the front end
+
   } catch (error) {
-    console.log('no buono', error);
+    console.log(error);
     res
       .status(500)
-      .send(error);
+      .send({ error: error.message });
   }
 };
 

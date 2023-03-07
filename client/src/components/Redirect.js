@@ -27,6 +27,13 @@ function Redirect () {
       .catch(error => console.error(error));
   }, [setShifts]);
 
+  // useEffect(() => {
+  //   fetch('http://localhost:4000/rota')
+  //     .then(response => response.json())
+  //     .then(data => setRota(data))
+  //     .catch(error => console.error(error));
+  // }, [setRota]);
+
   return (
     <div className="redirect">
       <Routes>
@@ -69,7 +76,8 @@ function Redirect () {
 
         <Route
           path="/rota"
-          element={<Rota />}
+          element={<Rota
+          />}
         />
 
         <Route path="*" element={<h1> Invalid Url</h1>} />

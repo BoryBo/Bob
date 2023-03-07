@@ -20,7 +20,8 @@ function Shifts ({ shifts, setShifts, shiftTypes }) {
             key={shiftType.shift_type_id}
             shifts={shifts}
             setShifts={setShifts}
-            shiftType={shiftType}></Row>
+            shiftType={shiftType}
+          ></Row>
         )}
       </div>
     </>
