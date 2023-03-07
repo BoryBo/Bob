@@ -70,15 +70,19 @@ function prioritise (employees, shiftType) {
   comparisonEmployees = comparisonEmployees
     .filter(x => x.restedEnough)
     .filter(x => x.hours < MAXHOURS)
-    .sort((a, b) => b.hours - a.hours)
+    .sort((a, b) => a.hours - b.hours)
     .map(x => x.employee_id);
   return comparisonEmployees;
 }
 
-async function generateRandomRotas (numRotas) {
+//TODO: NUMBERROTA
+// async function generateRandomRotas (numRotas) {
+
+async function generateRandomRotas () {
   let inpDays = await expandShiftsWithShiftType();
   let inpEmployees = await getAllEmployees();
   let bestRota = [];
+  let numRotas = 1;
   for (let i of Array(numRotas)) {
     let days = { ...inpDays };
     let employees = [...inpEmployees];
@@ -112,14 +116,21 @@ async function generateRandomRotas (numRotas) {
       });
       // TODO: evaluate this rota against existing one
     }
+    employees.forEach(x => {
+      if (x.shifts.length > 0) {
+        // because shifts include employees which include shifts
+        x.shifts.forEach(s => delete s.assignedEmployees);
+      }
+    });
     bestRota = employees;
   }
   return bestRota;
 }
-async function logPromiseResult () {
-  console.log(await generateRandomRotas(1));
-}
-logPromiseResult();
+
+// async function logPromiseResult () {
+//   console.log(await generateRandomRotas(1));
+// }
+// logPromiseResult();
 
 // function scoreRota (rota) {
 //   let score = 0;
@@ -133,3 +144,20 @@ logPromiseResult();
 // function saveRota () {
 //   return 0;
 // }
+
+
+exports.getRota = async (req, res) => {
+  try {
+    let rota = await generateRandomRotas();
+    console.log(rota);
+    res
+      .status(200)
+      .send(rota);
+  } catch (error) {
+    console.log('no buono', error);
+    res
+      .status(500)
+      .send(error);
+  }
+};
+

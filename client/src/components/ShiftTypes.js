@@ -6,16 +6,17 @@ import { MdDownloadDone } from 'react-icons/md';
 
 function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
   const [newShiftType, setNewShiftType] = useState({ description: '', abbreviation: '', start: '', end: '' });
+  const URL = 'http://localhost:4000/';
 
   useEffect(() => {
-    fetch('http://localhost:4000/shift-types')
+    fetch(`${URL}shift-types`)
       .then(response => response.json())
       .then(data => setShiftTypes(helper.sortShiftTypeByName(data)))
       .catch(error => console.error(error));
   }, [setShiftTypes]);
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:4000/shift-type/${id}`, {
+    fetch(`${URL}shift-type/${id}`, {
       method: 'DELETE',
     })
       .then(() => setShiftTypes(shiftTypes.filter(shift => shift.shift_type_id !== id)))

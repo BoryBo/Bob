@@ -8,17 +8,17 @@ import { AiOutlineUserAdd } from 'react-icons/ai';
 
 const EmployeesTable = ({ employees, setEmployees }) => {
   const [newEmployee, setNewEmployee] = useState({ name: '', surname: '', email: '' });
-
+  const URL = 'http://localhost:4000/';
 
   useEffect(() => {
-    fetch('http://localhost:4000/employees')
+    fetch(`${URL}employees`)
       .then(response => response.json())
       .then(data => setEmployees(helper.sortEmployeesByName(data)))
       .catch(error => console.error(error));
   }, [setEmployees]);
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:4000/employees/${id}`, {
+    fetch(`${URL}employees/${id}`, {
       method: 'DELETE',
     })
       .then(() => setEmployees(employees.filter(employee => employee.employee_id !== id)))
@@ -26,7 +26,7 @@ const EmployeesTable = ({ employees, setEmployees }) => {
   };
 
   const handleAdd = () => {
-    fetch('http://localhost:4000/employee', {
+    fetch(`${URL}employee`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newEmployee),
@@ -53,7 +53,7 @@ const EmployeesTable = ({ employees, setEmployees }) => {
   };
 
   const handleSave = (id, field, value) => {
-    fetch(`http://localhost:4000/employee/${id}`, {
+    fetch(`${URL}employee/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ [field]: value }),

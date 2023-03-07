@@ -1,13 +1,9 @@
+'use strict';
 const router = require('express').Router();
 const employeeCont = require('./controllers/employee.controller');
 const shiftTypeCont = require('./controllers/shiftType.controller');
 const shiftCont = require('./controllers/shift.controller');
-// const rotaCont = require('./controllers/rota.controller');
-
-
-router.get('/', (req, res) => {
-  res.json({ message: 'Hiiiii' });
-});
+const rotaCont = require('./controllers/rota.controller');
 
 //employee methods
 router.get('/employees', employeeCont.getAllEmployees);
@@ -27,8 +23,8 @@ router.post('/shift', shiftCont.addShift);
 router.delete('/shift/:id', shiftCont.deleteShift);
 router.put('/shift/:id', shiftCont.updateShift);
 
-//test methods
-// router.get('/enhancedShifts', rotaCont.expandShiftsWithShiftType);
+//rota methods
+router.get('/rota', rotaCont.getRota);
 
 
 module.exports = router;

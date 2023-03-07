@@ -4,8 +4,8 @@ import helper from '../helper';
 import ShiftTypes from './ShiftTypes';
 import EmployeesTable from './EmployeesTable';
 import Home from './Home';
-import Rota from './Rota';
-import Shifts from './ShiftsTable.js/Shifts';
+import Rota from './rota/Rota';
+import Shifts from './shiftsTable/Shifts';
 
 
 function Redirect () {
