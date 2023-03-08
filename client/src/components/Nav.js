@@ -1,5 +1,4 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { AiFillHome } from 'react-icons/ai';
 import { BsFillPeopleFill } from 'react-icons/bs';
 import { AiFillClockCircle } from 'react-icons/ai';
@@ -10,60 +9,70 @@ import { IoIosCreate } from 'react-icons/io';
 
 // $( "li.item-ii" ).find( "li" ).css( "background-color", "red" );
 
+let activeStyle = {
+  backgroundColor: "rgb(35, 39, 42)",
+};
 
-function Nav ({ selectedTab, setSelectedTab }) {
+
+function Nav () {
   return (
     <nav className='Nav'>
-      <ul className='nav-list'>
 
-        <li
-          className={`nav-row ${selectedTab === 'nav-home' ? 'nav-selected' : 'nav-not-selected'}`}
-          onClick={setSelectedTab('nav-home')}
-        >
-          <Link to="/">
+      <ul className='nav-list'>
+        <li className={`nav-row`}>
+          <NavLink
+            to="/"
+            style={({ isActive }) => isActive ? activeStyle : undefined}
+          >
             <AiFillHome />
             <p> Home </p>
-          </Link>
+          </NavLink>
         </li>
 
-        <li className={`nav-row ${selectedTab === 'nav-employees' ? 'nav-selected' : 'nav-not-selected'} `}>
-          <Link
+        <li className={`nav-row`}>
+          <NavLink
             to="/employees"
-            onClick={setSelectedTab('nav-employees')}
+            style={({ isActive }) => isActive ? activeStyle : undefined}
           >
             <BsFillPeopleFill />
             <p>Employees</p>
-          </Link>
+          </NavLink>
         </li>
 
         <li
-          className={`nav-row ${selectedTab === 'nav-shift-types' ? 'nav-selected' : 'nav-not-selected'} `}
-          onClick={setSelectedTab('nav-shift-types')}
+          className={`nav-row`}
         >
-          <Link to="/shift-types">
+          <NavLink
+            to="/shift-types"
+            style={({ isActive }) => isActive ? activeStyle : undefined}
+          >
             <AiFillClockCircle />
             <p>Shift Types</p>
-          </Link>
+          </NavLink>
         </li>
 
         <li
-          className={`nav-row ${selectedTab === 'nav-shifts' ? 'nav-selected' : 'nav-not-selected'}`}
-          onClick={setSelectedTab('nav-shifts')}
+          className={`nav-row`}
         >
-          <Link to="/shifts">
+          <NavLink
+            to="/shifts"
+            style={({ isActive }) => isActive ? activeStyle : undefined}
+          >
             <IoIosCreate />
             <p>Shifts</p>
-          </Link>
+          </NavLink>
         </li>
 
         <li
-          className={`nav-row ${selectedTab === 'nav-rota' ? 'nav-selected' : 'nav-not-selected'} `}
-          onClick={setSelectedTab('nav-rota')}
+          className={`nav-row`}
         >
-          <Link to="/rota">
+          <NavLink
+            to="/rota"
+            style={({ isActive }) => isActive ? activeStyle : undefined}
+          >
             <ImCalendar />
             <p>Rota</p>
-          </Link>
+          </NavLink>
         </li>
 
 
@@ -73,4 +82,4 @@ function Nav ({ selectedTab, setSelectedTab }) {
   );
 };
 
-export default Nav;
+export default Nav;;

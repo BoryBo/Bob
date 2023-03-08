@@ -78,41 +78,41 @@ const EmployeesTable = ({ employees, setEmployees }) => {
 
           <tr key={employee.employee_id}>
             <td>
-              <input type="text" defaultValue={employee.name}
+              <input type="text" defaultValue={employee.name} className='employee-input'
                 onChange={(ev) => handleUpdate(employee.employee_id, 'name', ev.target.value)}
                 onBlur={(ev) => handleSave(employee.employee_id, 'name', ev.target.value)}
               />
             </td>
             <td>
-              <input type="text" defaultValue={employee.surname}
+              <input type="text" defaultValue={employee.surname} className='employee-input'
                 onChange={(ev) => handleUpdate(employee.employee_id, 'surname', ev.target.value)}
                 onBlur={(ev) => handleSave(employee.employee_id, 'surname', ev.target.value)}
               />
             </td>
             <td>
-              <input type="email" defaultValue={employee.email}
+              <input type="email" defaultValue={employee.email} className='employee-input'
                 onChange={(ev) => handleUpdate(employee.employee_id, 'email', ev.target.value)}
                 onBlur={(ev) => handleSave(employee.employee_id, 'email', ev.target.value)}
               />
             </td>
             <td>
-              <button className='delete-btn' onClick={() => handleDelete(employee.employee_id)}><AiOutlineUserDelete /></button>
+              <button className='employee-btn delete-btn' onClick={() => handleDelete(employee.employee_id)}><AiOutlineUserDelete /></button>
             </td>
           </tr>
         ))}
 
         <tr className='add-form'>
           <td>
-            <input type="text" name="name" value={newEmployee.name} onChange={handleInputChange} />
+            <input className='add-input' type="text" name="name" value={newEmployee.name} onChange={handleInputChange} />
           </td>
           <td>
-            <input type="text" name="surname" value={newEmployee.surname} onChange={handleInputChange} />
+            <input className='add-input' type="text" name="surname" value={newEmployee.surname} onChange={handleInputChange} />
           </td>
           <td>
-            <input type="email" name="email" value={newEmployee.email} onChange={handleInputChange} />
+            <input className='add-input' type="email" name="email" value={newEmployee.email} onChange={handleInputChange} />
           </td>
           <td>
-            <button className='add-btn' onClick={handleAdd}> <AiOutlineUserAdd /> </button>
+            <button className='employee-btn add-btn' onClick={handleAdd}> <AiOutlineUserAdd /> </button>
           </td>
         </tr>
       </tbody>

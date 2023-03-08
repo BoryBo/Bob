@@ -1,9 +1,17 @@
 .bgr {
   background-image: url(../../public/person-facing-challenges-at-work.svg);
-  background-size: 90%;
+  background-size: 80%;
   background-repeat: no-repeat;
   background-position-x: center;
   /* background-position: center; */
   width:100%;
   height:100%;
+}
+
+.bgr > h1 {
+  color:rgb(222 247 243);
+}
+
+.bgr > p {
+  color:rgb(120 194 224);
 }
