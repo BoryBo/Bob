@@ -3,7 +3,7 @@ import PersonShift from './PersonShift';
 
 
 
-function PersonRow ({ employee }) {
+function PersonRow ({ employee, abbreviations }) {
   let days = [...Array(28).keys()].map(x => x + 1);
   days = days.map(x => {
     let shiftOnDay = employee.shifts.filter(y => y['shifts.day_number'] === x);
@@ -11,19 +11,19 @@ function PersonRow ({ employee }) {
   });
   return (
     <>
-      <div className="row-header">
-        <div>{employee.name}</div>
-        <h6 className='tot-hours'>Tot. houres: {employee.hours}</h6>
+      <div className="rota-row-header">
+        <p >{employee.name}</p>
+        <p className='tot-hours'>h: {employee.hours}</p>
       </div>
       {days.map(day =>
         day ?
           <PersonShift
-
+            abbreviations={abbreviations}
             key={day['shifts.shift_id']}
             shift={day}
           />
           :
-          <p className='shift' key={Math.floor(Math.random() * 100000)}>Off</p>
+          <p className='shift' key={Math.floor(Math.random() * 100000)}></p>
       )}
 
     </>

@@ -8,6 +8,8 @@ import { IoIosCreate } from 'react-icons/io';
 //import { IoCreateOutline } from 'react-icons/io';
 // import { AiOutlineClockCircle } from 'react-icons/ai';
 
+// $( "li.item-ii" ).find( "li" ).css( "background-color", "red" );
+
 
 function Nav ({ selectedTab, setSelectedTab }) {
   return (

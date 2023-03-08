@@ -8,13 +8,12 @@ function Row ({ shiftType, shifts, setShifts }) {
 
       {shifts.filter(shift => shift.shift_type_id === shiftType.shift_type_id).map(shift =>
         <Cell
-          className={`grid-element-${shift.day_number%7 === 0 ? 'seventh' : 'week'}`}
+          className={`grid-element-${shift.day_number % 7 === 0 ? 'seventh' : 'week'}`}
           key={shift.shift_id}
           setShifts={setShifts}
           shifts={shifts}
           shift={shift}
           def={shift.people_required}
-          styling={shiftType.abbreviation}
         />
       )}
     </>);

@@ -3,9 +3,20 @@ import './rota.css';
 import PersonRow from './PersonRow';
 // import helper from '../../helper';
 
-function Rota () {
+// $( "li.item-ii" ).find( "li" ).css( "background-color", "red" );
+
+
+function Rota ({ shiftTypes }) {
   const [rota, setRota] = useState([]);
   const [error, setError] = useState(null);
+
+  let abbreviations = [...shiftTypes];
+  abbreviations = abbreviations.map(x => x.abbreviation);
+  abbreviations = { ...abbreviations };
+  abbreviations = Object
+    .entries(abbreviations)
+    .map(([key, value]) => [value, key]);
+  abbreviations = Object.fromEntries(abbreviations);
 
   useEffect(() => {
     fetch('http://localhost:4000/rota')
@@ -19,8 +30,9 @@ function Rota () {
       .then(data => {
         //TODO:sort by name
         // setRota(helper.sortEmployeesByName(data));
-       // console.log(data);
+        // console.log(data);
         setRota(data);
+        // console.log(data);
       })
 
       .catch(error => {
@@ -32,7 +44,7 @@ function Rota () {
 
   let createDays = () => {
     let res = [...Array(28).keys()].map(x => x + 1);
-    return res.map(num => <div key={num} className={`day-num item-${num}`} value={num}> {num}</div>);
+    return res.map(num => <div key={num} className={`column-header colum-header-${num % 7 === 0 ? 'seventh' : 'week'} `} value={num}> {num}</div>);
   };
 
 
@@ -42,15 +54,15 @@ function Rota () {
   return (
     <>
       <div className="grid">
-        <div className="item row-header"></div>
+        <div className="empty"></div>
         {createDays()}
 
         {rota.map(
           employee => <PersonRow
+            abbreviations={abbreviations}
             key={employee.employee_id}
             employee={employee}
           ></PersonRow>
-
         )}
       </div>
     </>);

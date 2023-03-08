@@ -1,13 +1,14 @@
 import React from 'react';
 
-function PersonShift ({ shift }) {
+function PersonShift ({ shift, abbreviations }) {
   return (
     <>
       <div
         type='text'
         name='single_shift'
-        className={`shift ${shift.abbreviation}`}
-      >{shift.abbreviation}
+        className={`shift shift-${abbreviations[shift.abbreviation]}`}
+      >
+        {shift.abbreviation}
       </div>
     </>
   );

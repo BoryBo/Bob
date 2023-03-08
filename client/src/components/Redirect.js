@@ -77,6 +77,7 @@ function Redirect ({ setSelectedTab }) {
         <Route
           path="/rota"
           element={<Rota
+            shiftTypes={shiftTypes}
           />}
         />
 

@@ -7,7 +7,9 @@
   grid-row-gap:5px;
   grid-column-gap:5px;
   justify-items: center;
-  margin-top:4%;
+  margin-top:8%;
+  position:relative;
+  left:5%;
 }
 
 .header {
@@ -36,7 +38,7 @@
   height: 90%;
   font-size: large;
   border: none;
-  border-radius:1px;
+  border-radius:5px;
 }
 
 .colum-header-seventh {
@@ -44,6 +46,6 @@
 }
 
 .grid-element-seventh {
-  background-color:#3da898;
+  background-color:rgb(61 168 152);
   color:rgb(222 247 243);
 }
