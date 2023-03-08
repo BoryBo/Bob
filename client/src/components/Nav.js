@@ -4,15 +4,10 @@ import { BsFillPeopleFill } from 'react-icons/bs';
 import { AiFillClockCircle } from 'react-icons/ai';
 import { ImCalendar } from 'react-icons/im';
 import { IoIosCreate } from 'react-icons/io';
-//import { IoCreateOutline } from 'react-icons/io';
-// import { AiOutlineClockCircle } from 'react-icons/ai';
-
-// $( "li.item-ii" ).find( "li" ).css( "background-color", "red" );
 
 let activeStyle = {
   backgroundColor: "rgb(35, 39, 42)",
 };
-
 
 function Nav () {
   return (

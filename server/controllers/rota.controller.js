@@ -75,7 +75,6 @@ function prioritise (employees, shiftType) {
 }
 
 // async function generateRandomRotas (numRotas) {
-
 async function generateRandomRotas () {
   let inpDays = await expandShiftsWithShiftType();
   let inpEmployees = await getAllEmployees();
@@ -97,7 +96,6 @@ async function generateRandomRotas () {
           .filter(x => prioritise(employees, shiftType).includes(x.employee_id))
           .sort((a, b) => a.hours - b.hours);
 
-        // console.log(availablePeople);
         let toBeAssigned = [];
         if (availablePeople.length < shiftType['shifts.people_required']) {
           throw new Error('There is an issue with the number of available employees. Check you hired enough');

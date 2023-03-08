@@ -1,7 +1,6 @@
 import React from 'react';
 
 function Cell ({ shift, shifts, setShifts, def, className }) {
-  // const [newShift, setNewShift] = useState({});
 
   const handleUpdate = (id, field, value) => {
     let updatedShifts = [...shifts];

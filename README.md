@@ -23,7 +23,7 @@ The Shift Planning Web App is built using the following technologies:
 - Frontend: React, React Router
 - Styling: CSS
 - Backend:  Express.js, Sequelize
-- Database: Posgres
+- Database: Postgres
 
 ### Critical User Journey
 The following is an example user flow for the Shift Planning Web App:
