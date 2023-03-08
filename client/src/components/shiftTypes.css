@@ -19,7 +19,6 @@
   background-color:transparent;
   border: none;
   color:rgb(120 194 224);
-
 }
 
 .shift-input:focus {
@@ -46,9 +45,6 @@ tr {
   border-bottom: 1px solid rgba(135, 254, 236, 0.1);
   background-color: transparent;
 }
-tr:hover {
-  background-color: rgba(120, 194, 224, 0.165);
-}
 
 th {
   height: 40px;
@@ -61,19 +57,15 @@ th {
 
 /* ========== butttons =========== */
 .add-btn:hover{
-  box-shadow: 0em 0 2em rgba(11, 186, 11, 0.5);
-}
-
-.add-btn{
   color:rgb(7, 182, 83) ;
 }
 
-.delete-btn:hover{
-  box-shadow: 0em 0 2em rgba(222, 39, 39, 0.812);
+.add-btn{
+  color:rgb(130, 130, 130) ;
 }
 
 .delete-btn{
-  color:rgb(208, 11, 11) ;
+  color:rgb(130, 130, 130) ;
 }
 
 .shift-btn{
