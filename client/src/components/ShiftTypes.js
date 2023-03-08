@@ -1,8 +1,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import helper from '../helper';
-import { RiDeleteBin6Line } from 'react-icons/ri';
+import { TiDeleteOutline } from 'react-icons//ti';
 import { MdDownloadDone } from 'react-icons/md';
+import './shiftTypes.css';
 
 function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
   const [newShiftType, setNewShiftType] = useState({ description: '', abbreviation: '', start: '', end: '' });
@@ -84,9 +85,9 @@ function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
   };
 
   return (
-    <table>
+    <table className='shifts-table'>
       <thead>
-        <tr>
+        <tr className='table-head'>
           <th>Type</th>
           <th>Abbreviation</th>
           <th>Start</th>
@@ -99,50 +100,50 @@ function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
 
           <tr key={shiftType.shift_type_id}>
             <td>
-              <input type="text" defaultValue={shiftType.description}
+              <input type="text" defaultValue={shiftType.description} className='shift-input'
                 onChange={(ev) => handleUpdate(shiftType.shift_type_id, 'description', ev.target.value)}
                 onBlur={(ev) => handleSave(shiftType.shift_type_id, 'description', ev.target.value)}
               />
             </td>
             <td>
-              <input type="text" defaultValue={shiftType.abbreviation}
+              <input type="text" defaultValue={shiftType.abbreviation} className='shift-input'
                 onChange={(ev) => handleUpdate(shiftType.shift_type_id, 'abbreviation', ev.target.value)}
                 onBlur={(ev) => handleSave(shiftType.shift_type_id, 'abbreviation', ev.target.value)}
               />
             </td>
             <td>
-              <input type="time" defaultValue={shiftType.start}
+              <input type="time" defaultValue={shiftType.start} className='shift-input'
                 onChange={(ev) => handleUpdate(shiftType.shift_type_id, 'start', ev.target.value)}
                 onBlur={(ev) => handleSave(shiftType.shift_type_id, 'start', ev.target.value)}
               />
             </td>
             <td>
-              <input type="time" defaultValue={shiftType.end}
+              <input type="time" defaultValue={shiftType.end} className='shift-input'
                 onChange={(ev) => handleUpdate(shiftType.shift_type_id, 'end', ev.target.value)}
                 onBlur={(ev) => handleSave(shiftType.shift_type_id, 'end', ev.target.value)}
               />
             </td>
             <td>
-              <button className='delete-btn' onClick={() => handleDelete(shiftType.shift_type_id)}><RiDeleteBin6Line /></button>
+              <button className='shift-btn delete-btn' onClick={() => handleDelete(shiftType.shift_type_id)}><TiDeleteOutline /></button>
             </td>
           </tr>
         ))}
 
-        <tr>
+        <tr className='add-form'>
           <td>
-            <input type="text" name="description" value={newShiftType.description} onChange={handleInputChange} />
+            <input className='add-input' type="text" name="description" value={newShiftType.description} onChange={handleInputChange} />
           </td>
           <td>
-            <input type="text" name="abbreviation" value={newShiftType.abbreviation} onChange={handleInputChange} />
+            <input className='add-input' type="text" name="abbreviation" value={newShiftType.abbreviation} onChange={handleInputChange} />
           </td>
           <td>
-            <input type="time" name="start" value={newShiftType.start} onChange={handleInputChange} />
+            <input className='add-input' type="time" name="start" value={newShiftType.start} onChange={handleInputChange} />
           </td>
           <td>
-            <input type="time" name="end" value={newShiftType.end} onChange={handleInputChange} />
+            <input className='add-input' type="time" name="end" value={newShiftType.end} onChange={handleInputChange} />
           </td>
           <td>
-            <button className='add-btn' onClick={handleAdd}><MdDownloadDone /> </button>
+            <button className='shift-btn add-btn' onClick={handleAdd}><MdDownloadDone /> </button>
           </td>
         </tr>
       </tbody>

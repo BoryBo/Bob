@@ -73,9 +73,6 @@ code {
   align-items:flex-start; */
 }
 
-
-
-
 a {
   text-decoration: none;
   color:rgb(222 247 243);
@@ -90,23 +87,20 @@ a > * {
   margin-left: 15px
 }
 
-.add-btn{
+/* .add-btn{
   color: rgb(245, 245, 245);
   background-color: green;
-}
+} */
 
-.delete-btn{
+/* .delete-btn{
   color: rgb(255, 255, 255);
   background-color: red;
-}
+} */
 svg{
   font-size: large;
   font-weight: 900;
 }
-tr{
+/* tr{
   background-color: rgb(146, 155, 152);
-}
+} */
 
-.active{
-  /* background */
-}
