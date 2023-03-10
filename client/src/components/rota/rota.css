@@ -2,8 +2,7 @@
   display: grid;
   width:80%;
   min-width: 720px;
-  grid-template-columns:
-      15% repeat(28, 3.00%);
+  grid-template-columns: 15% repeat(28, 3.00%);
   grid-row-gap:5px;
   grid-column-gap:5px;
   justify-items: center;
@@ -56,9 +55,7 @@
   flex-wrap:nowrap;
   align-items:center;
   justify-content: center;
-  /* margin-right: 3%; */
   width:auto;
-  /* min-width:90px; */
   text-align:center;
   color: rgb(222 247 243);
   border: none;
@@ -74,5 +71,4 @@
 .tot-hours {
   font-size:10px;
   color:aqua
-
 }

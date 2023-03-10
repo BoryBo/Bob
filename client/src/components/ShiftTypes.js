@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import helper from '../helper';
-import { TiDeleteOutline } from 'react-icons//ti';
+import { TiDeleteOutline } from 'react-icons/ti';
 import { MdDownloadDone } from 'react-icons/md';
 import './shiftTypes.css';
 

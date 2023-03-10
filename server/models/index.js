@@ -1,12 +1,11 @@
 'use strict';
 require('dotenv').config()
-
 const Sequelize = require('sequelize');
 
+
 const db = {};
-
-
 const sequelize = new Sequelize(process.env.DB_URI)
+
 
 db.Employee = require('./employee')(sequelize, Sequelize.DataTypes);
 db.Shift = require('./shift')(sequelize, Sequelize.DataTypes);
