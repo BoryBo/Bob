@@ -1,9 +1,9 @@
-function shiftDuration(start: any, end: any) {
-  start = start.slice(0, 5).split(":");
-  start = parseInt(start[0]) * 60 + parseInt(start[1]);
-  end = end.slice(0, 5).split(":");
-  end = parseInt(end[0]) * 60 + parseInt(end[1]);
-  let delta = (end - start) / 60;
+function shiftDuration(start: string, end: string) {
+  const newStart =
+    parseInt(start.slice(0, 5).split(":")[0]) * 60 + parseInt(start[1]);
+  const newEnd =
+    parseInt(end.slice(0, 5).split(":")[0]) * 60 + parseInt(end[1]);
+  let delta = (newEnd - newStart) / 60;
   let isNewDayEnd = delta < 0 ? true : false;
   delta = Math.abs(delta);
   return { delta: Math.round(delta * 100) / 100, isNewDayEnd: isNewDayEnd };
