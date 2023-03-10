@@ -1,14 +1,17 @@
-import React from 'react';
+type Shifts = {
+  day_number: number;
+  people_required: number;
+  shift_id: string;
+  shift_type_id: number;
+};
 
-function Cell ({ shift, shifts, setShifts, def, className }) {
-
-  const handleUpdate = (id, field, value) => {
-    let updatedShifts = [...shifts];
-    updatedShifts = updatedShifts.map(shift => shift.shift_id === id ? { ...shift, [field]: value } : shift);
+function Cell({ shift, shifts, setShifts, def, className } : { shift: Shifts, shifts: Shifts[], setShifts: any, def:any, className: String }) { // should check any
+  const handleUpdate = (id: String, field: any, value: String) => { // should check type of field
+    let updatedShifts = [...shifts].map(shift => shift.shift_id === id ? { ...shift, [field]: value } : shift);
     setShifts(updatedShifts);
   };
 
-  const handleSave = (id, field, value) => {
+  const handleSave = (id: String, field: any, value: String) => {
     fetch(`http://localhost:4000/shift/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -20,7 +23,6 @@ function Cell ({ shift, shifts, setShifts, def, className }) {
 
 
   return (
-
     <>
       <input
         type='text'
