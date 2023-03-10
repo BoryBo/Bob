@@ -1,12 +1,17 @@
-import React from "react";
-// import * as apiService from '../apiService.js';
 import { useState, useEffect } from "react";
 import helper from "../helper";
 import { AiOutlineUserDelete } from "react-icons/ai";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import "./employeesTable.css";
+import { Employees as EmployeesType } from "../types";
 
-const EmployeesTable = ({ employees, setEmployees }) => {
+const EmployeesTable = ({
+  employees,
+  setEmployees,
+}: {
+  employees: EmployeesType[];
+  setEmployees: React.Dispatch<React.SetStateAction<EmployeesType[]>>;
+}) => {
   const [newEmployee, setNewEmployee] = useState({
     name: "",
     surname: "",
@@ -21,7 +26,7 @@ const EmployeesTable = ({ employees, setEmployees }) => {
       .catch((error) => console.error(error));
   }, [setEmployees]);
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: number) => {
     fetch(`${URL}employees/${id}`, {
       method: "DELETE",
     })
@@ -49,12 +54,11 @@ const EmployeesTable = ({ employees, setEmployees }) => {
     setNewEmployee({ name: "", surname: "", email: "" });
   };
 
-  const handleInputChange = (ev) => {
-    const { name, value } = ev.target;
-    setNewEmployee({ ...newEmployee, [name]: value });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewEmployee({ ...newEmployee, [e.target.name]: e.target.value });
   };
 
-  const handleUpdate = (id, field, value) => {
+  const handleUpdate = (id: number, field: string, value: string) => {
     let updatedEmployees = [...employees];
     updatedEmployees = updatedEmployees.map((emp) =>
       emp.employee_id === id ? { ...emp, [field]: value } : emp
@@ -62,7 +66,7 @@ const EmployeesTable = ({ employees, setEmployees }) => {
     setEmployees(helper.sortEmployeesByName(updatedEmployees));
   };
 
-  const handleSave = (id, field, value) => {
+  const handleSave = (id: number, field: string, value: string) => {
     fetch(`${URL}employee/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
