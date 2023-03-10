@@ -2,8 +2,7 @@
   display: grid;
   width:80%;
   min-width: 720px;
-  grid-template-columns:
-      10% repeat(28, 3.00%);
+  grid-template-columns: 10% repeat(28, 3.00%);
   grid-row-gap:5px;
   grid-column-gap:5px;
   justify-items: center;
@@ -26,7 +25,6 @@
 }
 
 .column-header {
-  /* border:1px solid rgb(38, 19, 160); */
   color: rgb(222 247 243);
 }
 
@@ -43,7 +41,6 @@
 
 .grid-element:hover {
   background-color: rgb(120 194 224);
-  /* color:rgb(222 247 243); */
 }
 
 .colum-header-seventh {
