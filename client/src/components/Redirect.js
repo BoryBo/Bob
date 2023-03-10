@@ -23,7 +23,10 @@ function Redirect () {
   useEffect(() => {
     fetch('http://localhost:4000/shifts')
       .then(response => response.json())
-      .then(data => setShifts(helper.sortShiftByDate(data)))
+      .then(data => {
+        console.log('DD', data)
+        setShifts(helper.sortShiftByDate(data))
+      })
       .catch(error => console.error(error));
   }, [setShifts]);
 
