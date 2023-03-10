@@ -1,20 +1,12 @@
 'use strict';
+require('dotenv').config()
 
 const Sequelize = require('sequelize');
-const config = require('./db.config.json');
 
 const db = {};
 
-const sequelize = new Sequelize(
-  config.testDatabase,
-  config.user,
-  config.password,
-  {
-    host: config.host,
-    dialect: config.dialect,
-    logging: config.logging,
-  }
-);
+
+const sequelize = new Sequelize(process.env.DB_URI)
 
 db.Employee = require('./employee')(sequelize, Sequelize.DataTypes);
 db.Shift = require('./shift')(sequelize, Sequelize.DataTypes);
