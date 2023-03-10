@@ -1,10 +1,9 @@
-import React from 'react';
-import './home.css';
+import "./home.css";
 
-function Home () {
+function Home() {
   return (
     <>
-      <div className='bgr'>
+      <div className="bgr">
         <h1>Bob</h1>
         <p>A shift planner for busy medical professionals</p>
       </div>

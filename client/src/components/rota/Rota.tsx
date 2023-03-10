@@ -62,7 +62,6 @@ function Rota({ shiftTypes }: { shiftTypes: ShiftTypes[] }) {
       <div className="grid">
         <div className="empty"></div>
         {createDays()}
-
         {rota.map((employee) => (
           <PersonRow
             abbreviations={abbreviations}
@@ -74,6 +73,8 @@ function Rota({ shiftTypes }: { shiftTypes: ShiftTypes[] }) {
     </>
   );
 }
+
+
 
 export default Rota;
 
