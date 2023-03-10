@@ -1,6 +1,6 @@
 "use strict";
 
-const ShiftType = (sequelize, DataTypes) =>
+const ShiftType = (sequelize: any, DataTypes: any) =>
   sequelize.define(
     "shift_type",
     {
@@ -33,7 +33,7 @@ const ShiftType = (sequelize, DataTypes) =>
             `${Math.abs(parseFloat(this.end) - parseFloat(this.start))}`
           );
         },
-        set(value) {
+        set(value: string) {
           throw new Error("Do not try to set the `duration` value!");
         },
       },
