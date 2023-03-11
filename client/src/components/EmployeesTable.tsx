@@ -92,6 +92,7 @@ const EmployeesTable = ({
             <td>
               <input
                 type="text"
+                data-testid="name"
                 defaultValue={employee.name}
                 className="employee-input"
                 onChange={(ev) =>
@@ -105,6 +106,7 @@ const EmployeesTable = ({
             <td>
               <input
                 type="text"
+                data-testid="surname"
                 defaultValue={employee.surname}
                 className="employee-input"
                 onChange={(ev) =>
@@ -118,6 +120,7 @@ const EmployeesTable = ({
             <td>
               <input
                 type="email"
+                data-testid="email"
                 defaultValue={employee.email}
                 className="employee-input"
                 onChange={(ev) =>
@@ -144,6 +147,7 @@ const EmployeesTable = ({
             <input
               className="add-input"
               type="text"
+              data-testid="add-name"
               name="name"
               value={newEmployee.name}
               onChange={handleInputChange}
@@ -153,6 +157,7 @@ const EmployeesTable = ({
             <input
               className="add-input"
               type="text"
+              data-testid="add-surname"
               name="surname"
               value={newEmployee.surname}
               onChange={handleInputChange}
@@ -162,6 +167,7 @@ const EmployeesTable = ({
             <input
               className="add-input"
               type="email"
+              data-testid="add-email"
               name="email"
               value={newEmployee.email}
               onChange={handleInputChange}
