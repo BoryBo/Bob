@@ -25,3 +25,5 @@ app.use(cors).use(express.json()).use(router);
     console.error("Unable to connect to the database:", err);
   }
 })();
+
+export {}; // need this to prevent error: Cannot redeclare block-scoped variable 'app'.

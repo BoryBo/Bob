@@ -1,0 +1,193 @@
+"use strict";
+const { Op } = require("sequelize");
+const db = require("../models");
+const { shiftDuration, fakeDate } = require("../convertTime");
+
+const MAXHOURS = 150;
+
+type Employee = {
+  employee_id: number;
+  name: string;
+  surname: string;
+  email: string;
+};
+
+type Shift = {
+  day_number: number;
+  shift_id: string;
+  shift_type_id: number;
+  people_required: string;
+};
+
+type ShiftTypes = {
+  abbreviation: string;
+  description: string;
+  duration: number;
+  end: string;
+  shift_type_id: number;
+  start: string;
+};
+
+async function getAllShiftsWithShiftType() {
+  try {
+    let shiftsCell = await db.ShiftType.findAll({
+      include: [
+        {
+          model: db.Shift,
+          required: true,
+          where: { shift_type_id: { [Op.not]: null } },
+        },
+      ],
+      //https://stackoverflow.com/questions/21961818/sequelize-convert-entity-to-plain-object
+      raw: true,
+    });
+    return shiftsCell;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+let getAllEmployees = async () => {
+  try {
+    let temp = await db.Employee.findAll({ raw: true });
+    let employees = temp.map((emp: Employee) => ({
+      employee_id: emp.employee_id,
+      name: `${emp.name} ${emp.surname}`,
+      shifts: [],
+      hours: 0,
+    }));
+    return employees;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+async function expandShiftsWithShiftType() {
+  let days = [...Array(28)].reduce((acc, elem) => {
+    return { ...acc, ...{ [elem + 1]: [] } };
+  }, {});
+  try {
+    let inp = await getAllShiftsWithShiftType();
+    let out = inp
+      .filter((shift: any) => shift["shifts.people_required"] > 0) // @TODO need to review this as want to put Shift type but need to check functionality
+      .map((shift: Shift) => {
+        return { ...shift, assignedEmployees: [] };
+      });
+    out.forEach((shift: any) => {
+      let d = shift["shifts.day_number"].toString();
+      days[d].push(shift);
+    });
+    return days;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function prioritise(employees: any, shiftType: any) {
+  // @TODO same as above - shiftType arg should be ShiftTypes and employees should be Employee[]
+  let startTime = shiftType.start;
+  let startDay = shiftType["shifts.day_number"];
+  let comparisonEmployees = employees.map((x: any) => {
+    // should be Employee
+    if (x.shifts.at(-1)) {
+      let lastShiftEnd = x.shifts.at(-1).end;
+      let isNewDayEnd = shiftDuration(
+        x.shifts.at(-1).start,
+        lastShiftEnd
+      ).isNewDayEnd;
+      let lastShiftDay =
+        x.shifts.at(-1)["shifts.day_number"] + (isNewDayEnd ? 1 : 0);
+      let newBegin = fakeDate(startDay, startTime);
+      let oldEnd = fakeDate(lastShiftDay, lastShiftEnd);
+      var hoursDelta = (newBegin - oldEnd) / 36e5;
+      x.restedEnough = hoursDelta >= 11.5;
+    } else {
+      x.restedEnough = true;
+    }
+    return x;
+  });
+  comparisonEmployees = comparisonEmployees
+    .filter((x) => x.restedEnough)
+    .filter((x) => x.hours < MAXHOURS)
+    .map((x) => x.employee_id);
+  return comparisonEmployees;
+}
+
+// async function generateRandomRotas (numRotas) {
+async function generateRandomRotas() {
+  let inpDays = await expandShiftsWithShiftType();
+  let inpEmployees = await getAllEmployees();
+  let bestRota = [];
+  let numRotas = 1;
+  for (let i of Array(numRotas)) {
+    let days = { ...inpDays };
+    let employees = [...inpEmployees];
+    // loop for every day
+    for (let dayNumber = 1; dayNumber <= 28; dayNumber++) {
+      // if no shift is required, go to next day
+      if (days[dayNumber].length === 0) {
+        continue;
+      }
+
+      // loop through each array of shifts in a day
+      days[dayNumber].forEach((shiftType) => {
+        let availablePeople = employees
+          .filter((x) =>
+            prioritise(employees, shiftType).includes(x.employee_id)
+          )
+          .sort((a, b) => a.hours - b.hours);
+
+        let toBeAssigned = [];
+        if (availablePeople.length < shiftType["shifts.people_required"]) {
+          throw new Error(
+            "There is an issue with the number of available employees. Check you hired enough"
+          );
+        }
+        toBeAssigned = availablePeople.slice(
+          0,
+          shiftType["shifts.people_required"]
+        );
+
+        // Here goes the logic to update the shifts
+        shiftType["assignedEmployees"] = toBeAssigned;
+
+        employees
+          .filter((x) =>
+            toBeAssigned.map((y) => y.employee_id).includes(x.employee_id)
+          )
+          .forEach((x) => {
+            // Here goes the logic to update the employees
+            x.shifts.push(shiftType);
+            x.hours =
+              x.hours + shiftDuration(shiftType.start, shiftType.end).delta;
+          });
+      });
+    }
+    employees.forEach((x) => {
+      if (x.shifts.length > 0) {
+        // because shifts include employees which include shifts
+        x.shifts.forEach((s) => delete s.assignedEmployees);
+      }
+    });
+    bestRota = employees;
+  }
+  return bestRota;
+}
+//prints the rota
+// async function logPromiseResult () {
+//   console.log(await generateRandomRotas(1));
+// }
+// logPromiseResult();
+
+exports.getRota = async (req, res) => {
+  try {
+    let rota = await generateRandomRotas();
+    res.status(200).send(rota);
+    // .send({ data: rota, error: null });// handle in the front end
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: error.message });
+  }
+};
+
+export {};
