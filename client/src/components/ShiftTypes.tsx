@@ -14,7 +14,7 @@ function ShiftTypes({
   shiftTypes: ShiftTypesType[];
   setShiftTypes: React.Dispatch<React.SetStateAction<ShiftTypesType[]>>;
   shifts: Shifts[];
-  setShifts: React.Dispatch<React.SetStateAction<Shifts[]>>;
+  setShifts: React.Dispatch<React.SetStateAction<(number | Shifts)[]>>;
 }) {
   const [newShiftType, setNewShiftType] = useState({
     description: "",
@@ -43,6 +43,7 @@ function ShiftTypes({
 
   async function addShift(day_number: number, shift_type_id: number) {
     // This function adds a shift with people_required = 0 by default:
+    console.log("running", { day_number, shift_type_id });
     let shift = await fetch("http://localhost:4000/shift", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -70,7 +71,7 @@ function ShiftTypes({
 
     // Creating 28 placeholder shifts associated with the new shift type
     // so that the shift table is pre-populated:
-    let newShifts = [...Array(28)].map((x) => x + 1);
+    let newShifts = [...Array(28).keys()].map((x) => x + 1);
     newShifts = await Promise.all(
       newShifts.map(async (shift) => {
         return addShift(shift, tmpShiftType.shift_type_id);

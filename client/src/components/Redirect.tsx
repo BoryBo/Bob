@@ -15,7 +15,7 @@ import Shifts from "./shiftsTable/Shifts";
 function Redirect() {
   const [employees, setEmployees] = useState<EmployeesType[]>([]);
   const [shiftTypes, setShiftTypes] = useState<ShiftTypesType[]>([]);
-  const [shifts, setShifts] = useState<ShiftsType[]>([]);
+  const [shifts, setShifts] = useState<any[]>([]);
 
   useEffect(() => {
     fetch("http://localhost:4000/shift-types")
