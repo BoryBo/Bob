@@ -1,32 +1,12 @@
 "use strict";
+
+import { Request, Response } from "express";
+
 const { Op } = require("sequelize");
 const db = require("../models");
 const { shiftDuration, fakeDate } = require("../convertTime");
 
 const MAXHOURS = 150;
-
-type Employee = {
-  employee_id: number;
-  name: string;
-  surname: string;
-  email: string;
-};
-
-type Shift = {
-  day_number: number;
-  shift_id: string;
-  shift_type_id: number;
-  people_required: string;
-};
-
-type ShiftTypes = {
-  abbreviation: string;
-  description: string;
-  duration: number;
-  end: string;
-  shift_type_id: number;
-  start: string;
-};
 
 async function getAllShiftsWithShiftType() {
   try {
@@ -50,7 +30,7 @@ async function getAllShiftsWithShiftType() {
 let getAllEmployees = async () => {
   try {
     let temp = await db.Employee.findAll({ raw: true });
-    let employees = temp.map((emp: Employee) => ({
+    let employees = temp.map((emp: any) => ({
       employee_id: emp.employee_id,
       name: `${emp.name} ${emp.surname}`,
       shifts: [],
@@ -63,14 +43,14 @@ let getAllEmployees = async () => {
 };
 
 async function expandShiftsWithShiftType() {
-  let days = [...Array(28)].reduce((acc, elem) => {
+  let days: Record<string, any> = [...Array(28).keys()].reduce((acc, elem) => {
     return { ...acc, ...{ [elem + 1]: [] } };
   }, {});
   try {
     let inp = await getAllShiftsWithShiftType();
     let out = inp
-      .filter((shift: any) => shift["shifts.people_required"] > 0) // @TODO need to review this as want to put Shift type but need to check functionality
-      .map((shift: Shift) => {
+      .filter((shift: any) => shift["shifts.people_required"] > 0)
+      .map((shift: any) => {
         return { ...shift, assignedEmployees: [] };
       });
     out.forEach((shift: any) => {
@@ -83,12 +63,10 @@ async function expandShiftsWithShiftType() {
   }
 }
 
-function prioritise(employees: any, shiftType: any) {
-  // @TODO same as above - shiftType arg should be ShiftTypes and employees should be Employee[]
+function prioritise(employees: any, shiftType: Record<string, any>) {
   let startTime = shiftType.start;
   let startDay = shiftType["shifts.day_number"];
   let comparisonEmployees = employees.map((x: any) => {
-    // should be Employee
     if (x.shifts.at(-1)) {
       let lastShiftEnd = x.shifts.at(-1).end;
       let isNewDayEnd = shiftDuration(
@@ -107,9 +85,9 @@ function prioritise(employees: any, shiftType: any) {
     return x;
   });
   comparisonEmployees = comparisonEmployees
-    .filter((x) => x.restedEnough)
-    .filter((x) => x.hours < MAXHOURS)
-    .map((x) => x.employee_id);
+    .filter((x: any) => x.hours < MAXHOURS)
+    .filter((x: any) => x.restedEnough)
+    .map((x: any) => x.employee_id);
   return comparisonEmployees;
 }
 
@@ -120,7 +98,7 @@ async function generateRandomRotas() {
   let bestRota = [];
   let numRotas = 1;
   for (let i of Array(numRotas)) {
-    let days = { ...inpDays };
+    let days: Record<string, any> = { ...inpDays };
     let employees = [...inpEmployees];
     // loop for every day
     for (let dayNumber = 1; dayNumber <= 28; dayNumber++) {
@@ -130,15 +108,17 @@ async function generateRandomRotas() {
       }
 
       // loop through each array of shifts in a day
-      days[dayNumber].forEach((shiftType) => {
+      (days[dayNumber] ?? []).forEach((shiftType: any) => {
         let availablePeople = employees
           .filter((x) =>
             prioritise(employees, shiftType).includes(x.employee_id)
           )
           .sort((a, b) => a.hours - b.hours);
 
-        let toBeAssigned = [];
-        if (availablePeople.length < shiftType["shifts.people_required"]) {
+        let toBeAssigned: any[] = [];
+        if (
+          availablePeople.length < shiftType ? ["shifts.people_required"] : null
+        ) {
           throw new Error(
             "There is an issue with the number of available employees. Check you hired enough"
           );
@@ -166,7 +146,7 @@ async function generateRandomRotas() {
     employees.forEach((x) => {
       if (x.shifts.length > 0) {
         // because shifts include employees which include shifts
-        x.shifts.forEach((s) => delete s.assignedEmployees);
+        x.shifts.forEach((s: any) => delete s.assignedEmployees);
       }
     });
     bestRota = employees;
@@ -179,7 +159,7 @@ async function generateRandomRotas() {
 // }
 // logPromiseResult();
 
-exports.getRota = async (req, res) => {
+exports.getRota = async (req: Request, res: Response) => {
   try {
     let rota = await generateRandomRotas();
     res.status(200).send(rota);
