@@ -1,18 +1,10 @@
 import { useState, useEffect } from 'react';
 import './rota.css';
 import PersonRow from './PersonRow';
+import { Employee, ShiftTypes as ShiftTypesType } from "../../types";
 
-type ShiftTypes = {
-    abbreviation: string;
-    description: string;
-    duration: number;
-    end: string;
-    shift_type_id: number;
-    start: string;
-}
-
-function Rota({ shiftTypes }: { shiftTypes: ShiftTypes[] }) {
-  const [rota, setRota] = useState([]);
+function Rota({ shiftTypes }: { shiftTypes: ShiftTypesType[] }) {
+  const [rota, setRota] = useState<Employee[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const abbreviations = Object.fromEntries(Object.entries({
@@ -37,8 +29,8 @@ function Rota({ shiftTypes }: { shiftTypes: ShiftTypes[] }) {
       });
   }, [setRota]);
 
-  let createDays = () => {
-    let res = [...Array(28).keys()].map((x) => x + 1);
+  const createDays = () => {
+    const res = [...Array(28).keys()].map((x) => x + 1);
     return res.map((num) => (
       <div
         key={num}
@@ -53,7 +45,6 @@ function Rota({ shiftTypes }: { shiftTypes: ShiftTypes[] }) {
     ));
   };
 
-
   if (error) {
     return <h1 style={{ color: "red" }}> {error}</h1>;
   }
@@ -65,7 +56,7 @@ function Rota({ shiftTypes }: { shiftTypes: ShiftTypes[] }) {
         {rota.map((employee) => (
           <PersonRow
             abbreviations={abbreviations}
-            // key={employee.employee_id} // need to change this key
+            key={employee.employee_id}
             employee={employee}
           ></PersonRow>
         ))}
