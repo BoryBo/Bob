@@ -1,6 +1,7 @@
 "use strict";
 
 import { Request, Response } from "express";
+import { Employee, Employees, ShiftTypes } from "../types";
 
 const { Op } = require("sequelize");
 const db = require("../models");
@@ -30,7 +31,7 @@ async function getAllShiftsWithShiftType() {
 let getAllEmployees = async () => {
   try {
     let temp = await db.Employee.findAll({ raw: true });
-    let employees = temp.map((emp: any) => ({
+    let employees = temp.map((emp: Employees) => ({
       employee_id: emp.employee_id,
       name: `${emp.name} ${emp.surname}`,
       shifts: [],
@@ -49,11 +50,11 @@ async function expandShiftsWithShiftType() {
   try {
     let inp = await getAllShiftsWithShiftType();
     let out = inp
-      .filter((shift: any) => shift["shifts.people_required"] > 0)
-      .map((shift: any) => {
+      .filter((shift: ShiftTypes) => shift["shifts.people_required"] > 0)
+      .map((shift: ShiftTypes) => {
         return { ...shift, assignedEmployees: [] };
       });
-    out.forEach((shift: any) => {
+    out.forEach((shift: ShiftTypes) => {
       let d = shift["shifts.day_number"].toString();
       days[d].push(shift);
     });
@@ -63,10 +64,10 @@ async function expandShiftsWithShiftType() {
   }
 }
 
-function prioritise(employees: any, shiftType: Record<string, any>) {
+function prioritise(employees: Employees[], shiftType: Record<string, any>) {
   let startTime = shiftType.start;
   let startDay = shiftType["shifts.day_number"];
-  let comparisonEmployees = employees.map((x: any) => {
+  let comparisonEmployees = employees.map((x: Record<string, any>) => {
     if (x.shifts.at(-1)) {
       let lastShiftEnd = x.shifts.at(-1).end;
       let isNewDayEnd = shiftDuration(
@@ -85,9 +86,9 @@ function prioritise(employees: any, shiftType: Record<string, any>) {
     return x;
   });
   comparisonEmployees = comparisonEmployees
-    .filter((x: any) => x.hours < MAXHOURS)
-    .filter((x: any) => x.restedEnough)
-    .map((x: any) => x.employee_id);
+    .filter((x) => x.hours < MAXHOURS)
+    .filter((x) => x.restedEnough)
+    .map((x) => x.employee_id);
   return comparisonEmployees;
 }
 
