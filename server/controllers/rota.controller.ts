@@ -1,7 +1,7 @@
 "use strict";
 
 import { Request, Response } from "express";
-import { Employee, Employees, ShiftTypes } from "../types";
+import { Employee, Employees, Shift, Shifts, ShiftTypes } from "../types";
 
 const { Op } = require("sequelize");
 const db = require("../models");
@@ -109,7 +109,7 @@ async function generateRandomRotas() {
       }
 
       // loop through each array of shifts in a day
-      (days[dayNumber] ?? []).forEach((shiftType: any) => {
+      (days[dayNumber] ?? []).forEach((shiftType: Shift) => {
         let availablePeople = employees
           .filter((x) =>
             prioritise(employees, shiftType).includes(x.employee_id)
@@ -117,9 +117,7 @@ async function generateRandomRotas() {
           .sort((a, b) => a.hours - b.hours);
 
         let toBeAssigned: any[] = [];
-        if (
-          availablePeople.length < shiftType ? ["shifts.people_required"] : null
-        ) {
+        if (availablePeople.length < shiftType["shifts.people_required"]) {
           throw new Error(
             "There is an issue with the number of available employees. Check you hired enough"
           );
@@ -147,7 +145,9 @@ async function generateRandomRotas() {
     employees.forEach((x) => {
       if (x.shifts.length > 0) {
         // because shifts include employees which include shifts
-        x.shifts.forEach((s: any) => delete s.assignedEmployees);
+        x.shifts.forEach(
+          (s: Record<string, any>) => delete s.assignedEmployees
+        );
       }
     });
     bestRota = employees;
