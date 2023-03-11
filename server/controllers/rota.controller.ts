@@ -95,7 +95,7 @@ function prioritise(employees: any, shiftType: Record<string, any>) {
 async function generateRandomRotas() {
   let inpDays = await expandShiftsWithShiftType();
   let inpEmployees = await getAllEmployees();
-  let bestRota = [];
+  let bestRota: unknown[] = [];
   let numRotas = 1;
   for (let i of Array(numRotas)) {
     let days: Record<string, any> = { ...inpDays };
