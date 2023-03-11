@@ -1,22 +1,7 @@
 import Cell from './Cell';
+import { Shifts, ShiftTypes as ShiftTypesType } from "../../types";
 
-type ShiftTypes = {
-  abbreviation: string,
-  description: string,
-  duration: number,
-  end: string,
-  shift_type_id: number,
-  start: string,
-};
-
-type Shifts = {
-  day_number: number,
-  people_required: number,
-  shift_id: string,
-  shift_type_id: number,
-};
-
-function Row({ shiftType, shifts, setShifts }: { shiftType: ShiftTypes, shifts: Shifts[], setShifts: any }) {
+function Row({ shiftType, shifts, setShifts }: { shiftType: ShiftTypesType, shifts: Shifts[], setShifts: React.Dispatch<React.SetStateAction<Shifts[]>> }) {
   return (
     <>
       <div className="row-header header">{shiftType.abbreviation}</div>

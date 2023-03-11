@@ -1,17 +1,12 @@
-type Shifts = {
-  day_number: number;
-  people_required: number;
-  shift_id: string;
-  shift_type_id: number;
-};
+import { Shifts } from "../../types";
 
-function Cell({ shift, shifts, setShifts, def, className } : { shift: Shifts, shifts: Shifts[], setShifts: any, def:any, className: String }) { // should check any
-  const handleUpdate = (id: String, field: any, value: String) => { // should check type of field
+function Cell({ shift, shifts, setShifts, def, className } : { shift: Shifts, shifts: Shifts[], setShifts: React.Dispatch<React.SetStateAction<Shifts[]>>, def:string | number | readonly string[] | undefined, className: string }) { 
+  const handleUpdate = (id: string, field: string, value: string) => {
     let updatedShifts = [...shifts].map(shift => shift.shift_id === id ? { ...shift, [field]: value } : shift);
     setShifts(updatedShifts);
   };
 
-  const handleSave = (id: String, field: any, value: String) => {
+  const handleSave = (id: string, field: string, value: string) => {
     fetch(`http://localhost:4000/shift/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },

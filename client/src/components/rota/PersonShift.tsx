@@ -1,19 +1,4 @@
-type Shift = {
-  abbreviation: string;
-  description: string;
-  end: string;
-  shift_type_id: number;
-  shifts: {
-    day_number: number;
-    people_required: number;
-    shift_id: string;
-    shift_type_id: number;
-  };
-  start: string;
-}
-type Abbreviations = {
-  [key: string]: string,
-};
+import { Shift, Abbreviations } from "../../types";
 
 function PersonShift({ shift, abbreviations }: { shift: Shift, abbreviations: Abbreviations }) {
   return (
