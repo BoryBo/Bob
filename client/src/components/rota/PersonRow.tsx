@@ -11,7 +11,7 @@ function PersonRow({ employee, abbreviations }: { employee: Employee, abbreviati
     <>
       <div className="rota-row-header">
         <p >{employee.name}</p>
-        <p className="tot-hours">h: {employee.hours}</p>
+        <p className="tot-hours">h: {(Number(employee.hours.toFixed(2)))}</p>
       </div>
        {days.map(day  => {
         return day ?
