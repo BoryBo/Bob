@@ -110,7 +110,7 @@ function ShiftTypes({
   return (
     <table className="shifts-table">
       <thead>
-        <tr className="table-head">
+        <tr className="table-head" data-testid="tableHead">
           <th>Type</th>
           <th>Abbreviation</th>
           <th>Start</th>
@@ -120,10 +120,11 @@ function ShiftTypes({
       </thead>
       <tbody>
         {shiftTypes.map((shiftType) => (
-          <tr key={shiftType.shift_type_id}>
+          <tr key={shiftType.shift_type_id} data-testid="getAllData">
             <td>
               <input
                 type="text"
+                data-testid="input-shiftType"
                 defaultValue={shiftType.description}
                 className="shift-input"
                 onChange={(ev) =>
@@ -146,6 +147,7 @@ function ShiftTypes({
               <input
                 type="text"
                 defaultValue={shiftType.abbreviation}
+                data-testid="input-abbreviation"
                 className="shift-input"
                 onChange={(ev) =>
                   handleUpdate(
@@ -167,6 +169,7 @@ function ShiftTypes({
               <input
                 type="time"
                 defaultValue={shiftType.start}
+                data-testid="input-startTime"
                 className="shift-input"
                 onChange={(ev) =>
                   handleUpdate(
@@ -184,6 +187,7 @@ function ShiftTypes({
               <input
                 type="time"
                 defaultValue={shiftType.end}
+                data-testid="input-endTime"
                 className="shift-input"
                 onChange={(ev) =>
                   handleUpdate(shiftType.shift_type_id, "end", ev.target.value)
@@ -196,6 +200,7 @@ function ShiftTypes({
             <td>
               <button
                 className="shift-btn delete-btn"
+                data-testid="deleteBtn"
                 onClick={() => handleDelete(shiftType.shift_type_id)}
               >
                 <TiDeleteOutline />
