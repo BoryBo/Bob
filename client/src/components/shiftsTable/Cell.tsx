@@ -1,4 +1,5 @@
 import { Shifts } from "../../types";
+import * as ApiService from "../../ApiService";
 
 function Cell({
   shift,
@@ -21,13 +22,7 @@ function Cell({
   };
 
   const handleSave = (id: string, field: string, value: string) => {
-    fetch(`http://localhost:4000/shift/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ [field]: value }),
-    })
-      .then((response) => response)
-      .catch((error) => console.error(error));
+    ApiService.changeShift(id, field, value);
   };
 
   return (

@@ -1,7 +1,9 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, act } from '@testing-library/react'
 import ShiftTypes from '../components/ShiftTypes';
+import user from '@testing-library/user-event';
 import userEvent from '@testing-library/user-event';
 import "@testing-library/jest-dom";
+import { handleAddShiftType } from '../ApiService';
 
 const shiftTypes = [{
   abbreviation: "OM",
@@ -87,58 +89,62 @@ describe('Render all existing shiftTypes', () => {
     const setShiftTypes = jest.fn();
     const setShifts = jest.fn();
     render(<ShiftTypes shiftTypes={shiftTypes}
-                setShiftTypes={setShiftTypes}
-                shifts={shifts}
-                setShifts={setShifts} />)
+              setShiftTypes={setShiftTypes}
+              shifts={shifts}
+              setShifts={setShifts} />)
     const shiftTypeElements = await waitFor(() => screen.getAllByTestId("getAllData"));
     expect(shiftTypeElements).toHaveLength(4);
   })
 })
 
-describe('Testing input field', () => {
-  const shiftType = screen.queryByTestId("input-shiftType");
-  const abbreviation = screen.queryByTestId("input-abbreviation");
-  const startTime = screen.queryByTestId("input-startTime");
-  const endTime = screen.queryByTestId("input-endTime");
-  const deleteBtn = screen.queryByTestId("deleteBtn")
-
-  it('should not render data when it is deleted', async () => {
-    const setShiftTypes = jest.fn();
-    const setShifts = jest.fn();
-    render(<ShiftTypes shiftTypes={shiftTypes}
+describe("ShiftTypes", () => {
+  it("able to input into fields", async () => {
+    const setShiftTypes = jest.fn(() => promise);
+    const setShifts = jest.fn(() => promise);
+    const promise = Promise.resolve();
+    const renderedApp = render(<ShiftTypes shiftTypes={shiftTypes}
       setShiftTypes={setShiftTypes}
       shifts={shifts}
-      setShifts={setShifts} />);
-    
-  })
+      setShifts={setShifts} />)
+    const type: any = await renderedApp.findByPlaceholderText("shift-type");
+    const abbreviation: any = await renderedApp.findByPlaceholderText("abbreviation");
+    const start: any = await renderedApp.findByPlaceholderText("start-time");
+    const end: any = await renderedApp.findByPlaceholderText("end-time");
+    await act(async () => {
+      user.type(type, "FW");
+      user.type(abbreviation, "Fulltime Weekend");
+      user.type(start, "08:00");
+      user.type(end, "17:00");
+    });
+    expect(type.value).toBe("FW");
+    expect(abbreviation.value).toBe("Fulltime Weekend");
+    expect(start.value).toBe("08:00");
+    expect(end.value).toBe("17:00");
+  });
 
   it('should render a new data that is added', async () => {
     const setShiftTypes = jest.fn();
     const setShifts = jest.fn();
-    render(<ShiftTypes shiftTypes={shiftTypes}
-      setShiftTypes={setShiftTypes}
-      shifts={shifts}
-      setShifts={setShifts} />);
-    // await userEvent.keyboard('test');
-    // expect(shiftType).not.toHaveValue('test');
-  })
-
-  it('should render an updated data when input has changed', async () => {
-  const setShiftTypes = jest.fn();
-  const setShifts = jest.fn();
-  render(<ShiftTypes shiftTypes={shiftTypes}
+    const promise = Promise.resolve();
+    const renderedApp = render(<ShiftTypes shiftTypes={shiftTypes}
       setShiftTypes={setShiftTypes}
       shifts={shifts}
       setShifts={setShifts} />)
+    const type: any = await renderedApp.findByPlaceholderText("shift-type");
+    const abbreviation: any = await renderedApp.findByPlaceholderText("abbreviation");
+    const start: any = await renderedApp.findByPlaceholderText("start-time");
+    const end: any = await renderedApp.findByPlaceholderText("end-time");
+    
+    // @ TODO : test handleAdd function 
+    await act(async () => {
+      user.type(type, "FW");
+      user.type(abbreviation, "Fulltime Weekend");
+      user.type(start, "08:00");
+      user.type(end, "17:00");
+      userEvent.click(screen.getByTestId('addBtn'));
+    });
+    // await new Promise((resolve) => setTimeout(resolve, 0));
+    // expect(screen.getByText("FW")).toBeInTheDocument();
+    // expect(screen.getByText("Fulltime Weekend")).toBeInTheDocument();
   })
-})
-
-
-
-// 2) handleDelete
-// 3) addShift 4) handleAdd
-// 5) handleUpdate 7) handleInputChange
-// 6) handleSave
-
-
-
+});

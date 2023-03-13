@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './rota.css';
 import PersonRow from './PersonRow';
 import { Employee, ShiftTypes as ShiftTypesType } from "../../types";
+import * as ApiService from "../../ApiService";
 
 function Rota({ shiftTypes }: { shiftTypes: ShiftTypesType[] }) {
   const [rota, setRota] = useState<Employee[]>([]);
@@ -12,18 +13,8 @@ function Rota({ shiftTypes }: { shiftTypes: ShiftTypesType[] }) {
   }).map(([key, value]) => [value, key]));
 
   useEffect(() => {
-    fetch("http://localhost:4000/rota")
-      .then((res) => {
-        if (res.status >= 400) {
-          return Promise.reject("Failed to fetch!");
-        }
-        return res;
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        setRota(data);
-      })
-
+    ApiService.getRota()
+      .then((data) => {setRota(data);})
       .catch((error) => {
         setError("Not enough employees to cover the required shifts!");
       });

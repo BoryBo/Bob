@@ -11,6 +11,7 @@ import EmployeesTable from "./EmployeesTable";
 import Home from "./Home";
 import Rota from "./rota/Rota";
 import Shifts from "./shiftsTable/Shifts";
+import * as ApiService from "../ApiService";
 
 function Redirect() {
   const [employees, setEmployees] = useState<EmployeesType[]>([]);
@@ -18,15 +19,13 @@ function Redirect() {
   const [shifts, setShifts] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:4000/shift-types")
-      .then((response) => response.json())
+    ApiService.getShiftTypes()
       .then((data) => setShiftTypes(helper.sortShiftTypeByName(data)))
       .catch((error) => console.error(error));
   }, [setShiftTypes]);
 
   useEffect(() => {
-    fetch("http://localhost:4000/shifts")
-      .then((response) => response.json())
+    ApiService.getShifts()
       .then((data) => setShifts(helper.sortShiftByDate(data)))
       .catch((error) => console.error(error));
   }, [setShifts]);

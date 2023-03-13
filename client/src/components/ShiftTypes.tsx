@@ -4,6 +4,7 @@ import { TiDeleteOutline } from "react-icons//ti";
 import { MdDownloadDone } from "react-icons/md";
 import "./shiftTypes.css";
 import { Shifts, ShiftTypes as ShiftTypesType } from "../types";
+import * as ApiService from "../ApiService";
 
 function ShiftTypes({
   shiftTypes,
@@ -25,16 +26,13 @@ function ShiftTypes({
   const URL = "http://localhost:4000/";
 
   useEffect(() => {
-    fetch(`${URL}shift-types`)
-      .then((response) => response.json())
+    ApiService.getShiftTypes()
       .then((data) => setShiftTypes(helper.sortShiftTypeByName(data)))
       .catch((error) => console.error(error));
   }, [setShiftTypes]);
 
   const handleDelete = (id: number) => {
-    fetch(`${URL}shift-type/${id}`, {
-      method: "DELETE",
-    })
+      ApiService.deleteShiftType(id)
       .then(() =>
         setShiftTypes(shiftTypes.filter((shift) => shift.shift_type_id !== id))
       )
@@ -44,23 +42,13 @@ function ShiftTypes({
   async function addShift(day_number: number, shift_type_id: number) {
     // This function adds a shift with people_required = 0 by default:
     console.log("running", { day_number, shift_type_id });
-    let shift = await fetch("http://localhost:4000/shift", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        day_number: day_number,
-        people_required: 0,
-        shift_type_id: shift_type_id,
-      }),
-    })
-      .then((response) => response.json())
-      .catch((err) => console.log(err));
-    return shift;
+    return ApiService.addShift(day_number, shift_type_id)
   }
 
   async function handleAdd() {
     // Adding a new shift type:
-    const newShiftTypeId = await fetch("http://localhost:4000/shift-type", {
+    const newShiftTypeId = // @TODO - use ApiService (but now it has type issue)
+      await fetch("http://localhost:4000/shift-type", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newShiftType),
@@ -91,13 +79,7 @@ function ShiftTypes({
   };
 
   const handleSave = (id: number, field: string, value: string) => {
-    fetch(`http://localhost:4000/shift-type/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ [field]: value }),
-    })
-      .then((response) => response)
-      .catch((error) => console.error(error));
+    ApiService.changeShiftType(id, field, value);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,7 +106,6 @@ function ShiftTypes({
             <td>
               <input
                 type="text"
-                data-testid="input-shiftType"
                 defaultValue={shiftType.description}
                 className="shift-input"
                 onChange={(ev) =>
@@ -147,7 +128,6 @@ function ShiftTypes({
               <input
                 type="text"
                 defaultValue={shiftType.abbreviation}
-                data-testid="input-abbreviation"
                 className="shift-input"
                 onChange={(ev) =>
                   handleUpdate(
@@ -169,7 +149,6 @@ function ShiftTypes({
               <input
                 type="time"
                 defaultValue={shiftType.start}
-                data-testid="input-startTime"
                 className="shift-input"
                 onChange={(ev) =>
                   handleUpdate(
@@ -187,7 +166,6 @@ function ShiftTypes({
               <input
                 type="time"
                 defaultValue={shiftType.end}
-                data-testid="input-endTime"
                 className="shift-input"
                 onChange={(ev) =>
                   handleUpdate(shiftType.shift_type_id, "end", ev.target.value)
@@ -214,6 +192,7 @@ function ShiftTypes({
             <input
               className="add-input"
               type="text"
+              placeholder="shift-type"
               name="description"
               value={newShiftType.description}
               onChange={handleInputChange}
@@ -223,6 +202,7 @@ function ShiftTypes({
             <input
               className="add-input"
               type="text"
+              placeholder ="abbreviation"
               name="abbreviation"
               value={newShiftType.abbreviation}
               onChange={handleInputChange}
@@ -231,6 +211,7 @@ function ShiftTypes({
           <td>
             <input
               className="add-input"
+              placeholder="start-time"
               type="time"
               name="start"
               value={newShiftType.start}
@@ -240,6 +221,7 @@ function ShiftTypes({
           <td>
             <input
               className="add-input"
+              placeholder="end-time"
               type="time"
               name="end"
               value={newShiftType.end}
@@ -247,7 +229,7 @@ function ShiftTypes({
             />
           </td>
           <td>
-            <button className="shift-btn add-btn" onClick={handleAdd}>
+            <button className="shift-btn add-btn" onClick={handleAdd} data-testid="addBtn">
               <MdDownloadDone />{" "}
             </button>
           </td>

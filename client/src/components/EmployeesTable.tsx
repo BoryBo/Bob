@@ -4,6 +4,7 @@ import { AiOutlineUserDelete } from "react-icons/ai";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import "./employeesTable.css";
 import { Employees as EmployeesType } from "../types";
+import * as ApiService from "../ApiService";
 
 const EmployeesTable = ({
   employees,
@@ -20,16 +21,13 @@ const EmployeesTable = ({
   const URL = "http://localhost:4000/";
 
   useEffect(() => {
-    fetch(`${URL}employees`)
-      .then((response) => response.json())
+    ApiService.getEmployees()
       .then((data) => setEmployees(helper.sortEmployeesByName(data)))
       .catch((error) => console.error(error));
   }, [setEmployees]);
 
   const handleDelete = (id: number) => {
-    fetch(`${URL}employees/${id}`, {
-      method: "DELETE",
-    })
+    ApiService.deleteEmployee(id)
       .then(() =>
         setEmployees(
           employees.filter((employee) => employee.employee_id !== id)
@@ -39,12 +37,7 @@ const EmployeesTable = ({
   };
 
   const handleAdd = () => {
-    fetch(`${URL}employee`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newEmployee),
-    })
-      .then((response) => response.json())
+    ApiService.addEmployee(newEmployee)
       .then((data) => {
         let updatedList = [...employees, data];
         setEmployees(helper.sortEmployeesByName(updatedList));
@@ -67,13 +60,7 @@ const EmployeesTable = ({
   };
 
   const handleSave = (id: number, field: string, value: string) => {
-    fetch(`${URL}employee/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ [field]: value }),
-    })
-      .then((response) => response)
-      .catch((error) => console.error(error));
+    ApiService.changeEmployee(id, field, value);
   };
 
   return (
