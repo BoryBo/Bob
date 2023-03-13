@@ -147,7 +147,7 @@ const EmployeesTable = ({
             <input
               className="add-input"
               type="text"
-              data-testid="add-name"
+              placeholder="name"
               name="name"
               value={newEmployee.name}
               onChange={handleInputChange}
@@ -157,7 +157,7 @@ const EmployeesTable = ({
             <input
               className="add-input"
               type="text"
-              data-testid="add-surname"
+              placeholder="surname"
               name="surname"
               value={newEmployee.surname}
               onChange={handleInputChange}
@@ -167,7 +167,7 @@ const EmployeesTable = ({
             <input
               className="add-input"
               type="email"
-              data-testid="add-email"
+              placeholder="email"
               name="email"
               value={newEmployee.email}
               onChange={handleInputChange}

@@ -1,4 +1,4 @@
-.emp-table{
+.emp-table {
   position: relative;
   top: 100px;
   margin: 0 auto;
@@ -8,39 +8,42 @@
   text-align: start;
 }
 
-.employee-input{
+.employee-input {
   height: 12px;
-	width: 80%;
-	font-size: 18px;
-	border-radius: 5px;
-	padding-top: 10px;
+  width: 80%;
+  font-size: 18px;
+  border-radius: 5px;
+  padding-top: 10px;
   padding-bottom: 10px;
-  background-color:transparent;
+  background-color: transparent;
   border: none;
-  color:rgb(120 194 224);
-
+  color: rgb(120 194 224);
 }
 
 .employee-input:focus {
-	outline-color: rgb(11, 156, 179);
-	outline-style: ridge;
+  outline-color: rgb(11, 156, 179);
+  outline-style: ridge;
   border-radius: 5px;
   padding: 10px;
 }
 
- .add-input {
+.add-input {
   height: 12px;
-	width: 80%;
-	font-size: 18px;
-	border-radius: 5px;
-	padding: 10px;
-	outline-color: rgb(11, 156, 179);
+  width: 80%;
+  font-size: 18px;
+  border-radius: 5px;
+  padding: 10px;
+  outline-color: rgb(11, 156, 179);
   background-color: rgba(52, 129, 121, 0.422);
   color: aliceblue;
   outline: none;
-  border:none;
-
+  border: none;
 }
+
+.add-input::placeholder {
+  color: #a0a0a0;
+}
+
 tr {
   border-bottom: 1px solid rgba(135, 254, 236, 0.1);
   background-color: transparent;
@@ -51,33 +54,31 @@ tr:hover {
 
 th {
   height: 40px;
-	color:rgb(222 247 243);
-	font-size: 22px;
+  color: rgb(222 247 243);
+  font-size: 22px;
   font-weight: 900;
-  text-align:start;
+  text-align: start;
 }
-
 
 /* ========== butttons =========== */
-.add-btn:hover{
-  color:rgb(7, 182, 83) ;
+.add-btn:hover {
+  color: rgb(7, 182, 83);
 }
 
-.add-btn{
-  color:rgb(130, 130, 130) ;
+.add-btn {
+  color: rgb(130, 130, 130);
 }
 
-.delete-btn:hover{
-   color:rgb(208, 11, 11) ;
+.delete-btn:hover {
+  color: rgb(208, 11, 11);
 }
 
-.delete-btn{
-  color:rgb(130, 130, 130) ;
+.delete-btn {
+  color: rgb(130, 130, 130);
 }
 
-.employee-btn{
+.employee-btn {
   border: none;
   border-radius: 50px;
   background-color: transparent;
-
 }
