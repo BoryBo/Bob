@@ -1,5 +1,4 @@
 import React from 'react';
-// import * as apiService from '../apiService.js';
 import { useState, useEffect } from 'react';
 import helper from '../helper';
 import { AiOutlineUserDelete } from 'react-icons/ai';

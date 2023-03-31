@@ -1,0 +1,23 @@
+{
+  "name": "bob",
+  "version": "1.0.0",
+  "description": "Overview Bob is a tool designed to help managers scheduling employees' shifts over a period of 28 days. Bob allows users to customise the number of employees, shift types, and the number of required shifts for each day. Bob then generates a schedule that ensures coverage for all shifts, as well as eployees' wellbeing, by capping the maximum number of hours and ensuring each has a sufficient numbers of hours off work.",
+  "main": "index.js",
+  "scripts": {
+    "install": "cd client && npm i . && cd ../server && npm i .",
+    "server": "cd server && nodemon index.js",
+    "client": "cd client && npm start && cd .. ",
+    "start:server-client": "concurrently \"npm run server\" \"npm run client \""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BoryBo/Bob"
+  },
+  "keywords": [],
+  "author": "Boryana Mincheva",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.0.1"
+  }
+}
+

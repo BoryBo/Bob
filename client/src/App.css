@@ -3,13 +3,7 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgb(35, 39, 42);
-
   font-family: 'Poppins'
-  /* -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; */
 }
 
 code {
@@ -18,7 +12,6 @@ code {
 }
 
 #root {
-  /* flex-grow:1; */
   height:100%
 }
 
@@ -32,12 +25,10 @@ code {
   height: 100%;
   width: 200px;
   background-color:rgb(61 168 152);
-  /*#78c2e0*/
 }
 
 .nav-list{
   list-style: none;
-  /* height: auto; */
   padding: 0;
   width: 100%;
 }
@@ -60,7 +51,6 @@ code {
   outline: 1 px solid gold;
   color: gold;
   display: flex;
-  /* justify-content: center; */
   align-items: center;
   flex-direction: row;
 }
@@ -68,9 +58,6 @@ code {
 .redirect{
   width:100%;
   padding: 10px;
-  /* display:flex;
-  justify-content:center;
-  align-items:flex-start; */
 }
 
 a {
@@ -87,20 +74,9 @@ a > * {
   margin-left: 15px
 }
 
-/* .add-btn{
-  color: rgb(245, 245, 245);
-  background-color: green;
-} */
-
-/* .delete-btn{
-  color: rgb(255, 255, 255);
-  background-color: red;
-} */
 svg{
   font-size: 26px;
   font-weight: 900;
 }
-/* tr{
-  background-color: rgb(146, 155, 152);
-} */
+
 

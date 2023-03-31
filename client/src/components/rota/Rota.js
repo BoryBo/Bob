@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './rota.css';
 import PersonRow from './PersonRow';
-// import helper from '../../helper';
-
-// $( "li.item-ii" ).find( "li" ).css( "background-color", "red" );
-
+import helper from '../../helper';
 
 function Rota ({ shiftTypes }) {
   const [rota, setRota] = useState([]);
@@ -28,11 +25,8 @@ function Rota ({ shiftTypes }) {
       })
       .then(response => response.json())
       .then(data => {
-        //TODO:sort by name
-        // setRota(helper.sortEmployeesByName(data));
-        // console.log(data);
-        setRota(data);
-        // console.log(data);
+        setRota(helper.sortEmployeesByName(data));
+        // setRota(data);
       })
 
       .catch(error => {

@@ -8,16 +8,12 @@ Features
 Bob has the following features:
 
  - Employee Input: Users can input the names of employees who will be scheduled for shifts.
-
  - Shift Input: Users can input the different types of shifts that need to be scheduled (e.g. morning shift, evening shift, overnight shift).
-
  - Shift Requirements Input: Users can input the number of required shifts for each day, for each shift type.
-
  - Schedule Generation: Once the user inputs all the necessary information, the app generates a schedule that ensures all required shifts are covered.
-
  - Schedule Display: The generated schedule is displayed to the user in an easy-to-read calendare-like format.
 
-## Technologies Used
+## Tech stack
 The Shift Planning Web App is built using the following technologies:
 
 - Frontend: React, React Router
@@ -33,3 +29,14 @@ The following is an example user flow for the Shift Planning Web App:
 2. User inputs the necessary information and submits the form.
 
 3. The app generates a rota based on the inputs provided and displays it to the user.
+
+## Running the app
+In order to install all the required dependencies, open a terminal from the root folder and run:
+```bash
+npm install
+```
+Once the installation is completed, simply run:
+
+```bash
+npm run start:server-client
+```

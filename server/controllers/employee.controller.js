@@ -61,7 +61,6 @@ exports.deleteEmployee = async (req, res) => {
 
 exports.updateEmployee = async (req, res) => {
   let id = req.params.id;
-
   try {
     let toBeUpdatedArr = await db.Employee.findAll({
       where: {
@@ -71,11 +70,9 @@ exports.updateEmployee = async (req, res) => {
     let temp = toBeUpdatedArr[0];
     await temp.set({ ...req.body });
     await temp.save();
-
     res
       .status(200)
       .send(`Empoyee with id:${id} was updated successfully.`);
-
   } catch (error) {
     console.log(error);
     res

@@ -24,7 +24,6 @@ exports.addShiftType = async (req, res) => {
       start: req.body.start,
       end: req.body.end
     });
-
     res
       .status(201)
       .send(newShiftType);
@@ -49,7 +48,6 @@ exports.deleteShiftType = async (req, res) => {
       .json({
         message: ` Shift type deleted successfully`,
       });
-
   } catch (error) {
     res
       .status(500)
@@ -60,7 +58,6 @@ exports.deleteShiftType = async (req, res) => {
 
 exports.updateShiftType = async (req, res) => {
   let id = req.params.id;
-
   try {
     let toBeUpdatedArr = await db.ShiftType.findAll({ where: { shift_type_id: id } });
     let temp = toBeUpdatedArr[0];
@@ -69,7 +66,6 @@ exports.updateShiftType = async (req, res) => {
     res
       .status(200)
       .send(`Shift type with id:${id} was updated successfully.`);
-
   } catch (error) {
     res
       .status(500)

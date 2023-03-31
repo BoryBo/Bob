@@ -22,7 +22,6 @@ exports.addShift = async (req, res) => {
       people_required: req.body.people_required,
       shift_type_id: req.body.shift_type_id,
     });
-
     res
       .status(201)
       .send(newShift);
@@ -37,7 +36,6 @@ exports.addShift = async (req, res) => {
 
 exports.deleteShift = async (req, res) => {
   let id = req.params.id;
-
   try {
     await db.Shift.destroy({
       where: { shift_id: id }
@@ -45,9 +43,8 @@ exports.deleteShift = async (req, res) => {
     res
       .status(200)
       .json({
-        message: ` Shift deleted successfully`,
+        message: `Shift deleted successfully`,
       });
-
   } catch (error) {
     res
       .status(500)
@@ -58,7 +55,6 @@ exports.deleteShift = async (req, res) => {
 
 exports.updateShift = async (req, res) => {
   let id = req.params.id;
-
   try {
     let toBeUpdatedArr = await db.Shift.findAll({ where: { shift_id: id } });
     let temp = toBeUpdatedArr[0];
@@ -67,7 +63,6 @@ exports.updateShift = async (req, res) => {
     res
       .status(200)
       .send(`Shift with id:${id} was updated successfully.`);
-
   } catch (error) {
     res
       .status(500)

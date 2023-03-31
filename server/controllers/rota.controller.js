@@ -124,7 +124,7 @@ async function generateRandomRotas () {
   }
   return bestRota;
 }
-//prints the rota
+//this prints the rota:
 // async function logPromiseResult () {
 //   console.log(await generateRandomRotas(1));
 // }
@@ -137,8 +137,7 @@ exports.getRota = async (req, res) => {
     res
       .status(200)
       .send(rota);
-    // .send({ data: rota, error: null });// handle in the front end
-
+    // .send({ data: rota, error: null });
   } catch (error) {
     console.log(error);
     res
