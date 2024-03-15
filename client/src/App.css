@@ -3,7 +3,7 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgb(35, 39, 42);
-  font-family: 'Poppins'
+  font-family: 'Poppins';
 }
 
 code {
@@ -12,71 +12,74 @@ code {
 }
 
 #root {
-  height:100%
+  height: 100%;
 }
 
 .App {
   display: flex;
-  height:100vh;
+  height: 100vh;
 }
 
-
-.Nav{
+.Nav {
   height: 100%;
   width: 200px;
-  background-color:rgb(61 168 152);
+  background-color: rgb(61 168 152);
 }
 
-.nav-list{
+.nav-list {
   list-style: none;
   padding: 0;
   width: 100%;
 }
 
 .nav-selected {
-  background-color:rgb(35, 39, 42);
+  background-color: rgb(35, 39, 42);
 }
 
 .nav-not-selected {
-  background-color:rgb(61 168 152);
+  background-color: rgb(61 168 152);
 }
 
-.nav-row:hover{
+.nav-row:hover {
   background-color: rgb(35, 39, 42);
   cursor: pointer;
-
 }
 
- .nav-row{
-  outline: 1 px solid gold;
-  color: gold;
+.nav-row {
   display: flex;
   align-items: center;
   flex-direction: row;
 }
 
-.redirect{
-  width:100%;
+.redirect {
+  width: 100%;
   padding: 10px;
 }
 
 a {
   text-decoration: none;
-  color:rgb(222 247 243);
-  width:100%;
-  display:flex;
+  color: rgb(222 247 243);
+  width: 100%;
+  display: flex;
   align-content: center;
   flex-direction: row;
   align-items: center;
 }
 
 a > * {
-  margin-left: 15px
+  margin-left: 15px;
 }
 
-svg{
+svg {
   font-size: 26px;
   font-weight: 900;
 }
 
-
+.error {
+  position: relative;
+  top: 20%;
+  color: rgb(255, 96, 96);
+  height: 20%;
+  font-size: 26px;
+  text-align: center;
+}

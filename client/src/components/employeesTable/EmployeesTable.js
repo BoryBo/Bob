@@ -1,66 +1,67 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import helper from '../helper';
-import { AiOutlineUserDelete } from 'react-icons/ai';
-import { AiOutlineUserAdd } from 'react-icons/ai';
+import React, { useState } from 'react';
+import { AiOutlineUserAdd, AiOutlineUserDelete } from 'react-icons/ai';
+import { addEmployee, deleteEmployee, updateEmployee } from '../../ApiService';
+import helper from '../../helper';
 import './employeesTable.css';
 
-
-const EmployeesTable = ({ employees, setEmployees }) => {
+const EmployeesTable = ({ employees, setEmployees, isLoading, error }) => {
   const [newEmployee, setNewEmployee] = useState({ name: '', surname: '', email: '' });
-  const URL = 'http://localhost:4000/';
-
-  useEffect(() => {
-    fetch(`${URL}employees`)
-      .then(response => response.json())
-      .then(data => setEmployees(helper.sortEmployeesByName(data)))
-      .catch(error => console.error(error));
-  }, [setEmployees]);
+  const [errorDeletingE, setErrorDeletingE] = useState(null);
+  const [errorAddingE, setErrorAddingE] = useState(null);
+  const [errorUpdatingE, setErrorUpdatingE] = useState(null);
 
   const handleDelete = (id) => {
-    fetch(`${URL}employees/${id}`, {
-      method: 'DELETE',
-    })
+    deleteEmployee(id)
       .then(() => setEmployees(employees.filter(employee => employee.employee_id !== id)))
-      .catch(error => console.error(error));
+      .catch((error) => setErrorDeletingE({ message: error.message || 'Failed to delete employee.' }));
   };
 
   const handleAdd = () => {
-    fetch(`${URL}employee`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newEmployee),
-    })
-      .then(response => response.json())
+    addEmployee(newEmployee)
       .then(data => {
         let updatedList = [...employees, data];
-        setEmployees(helper.sortEmployeesByName(updatedList));
+        setEmployees(helper.sortByName(updatedList));
       })
-      .catch(error => console.error(error));
-
+      .catch(error => {
+        setErrorAddingE({ message: error.message || 'Failed to add employee.' });
+      });
     setNewEmployee({ name: '', surname: '', email: '' });
   };
 
+  //addEmployee -> onChange:
   const handleInputChange = (ev) => {
     const { name, value } = ev.target;
     setNewEmployee({ ...newEmployee, [name]: value });
   };
 
+  //editEmployee -> onChange:
   const handleUpdate = (id, field, value) => {
     let updatedEmployees = [...employees];
     updatedEmployees = updatedEmployees.map(emp => emp.employee_id === id ? { ...emp, [field]: value } : emp);
-    setEmployees(helper.sortEmployeesByName(updatedEmployees));
+    setEmployees(helper.sortByName(updatedEmployees));
   };
 
   const handleSave = (id, field, value) => {
-    fetch(`${URL}employee/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ [field]: value }),
-    })
-      .then(response => response)
-      .catch(error => console.error(error));
+    updateEmployee(id, field, value)
+      // .then(response => response)
+      .catch(error => setErrorUpdatingE({ message: error.message || 'Failed to update employee.' }));
   };
+
+  if (errorUpdatingE) {
+    return <h2 className='error'> {errorUpdatingE.message}</h2>;
+  }
+  if (errorAddingE) {
+    return <h2 className='error'> {errorAddingE.message}</h2>;
+  }
+  if (errorDeletingE) {
+    return <h2 className='error'> {errorDeletingE.message}</h2>;
+  }
+  if (error) {
+    return <h2 className='error'> {error.message}</h2>;
+  }
+  if (isLoading) {
+    return <h3 className='error' style={{ color: "whitesmoke" }}>Loading ... </h3>;
+  }
 
   return (
     <table className='emp-table'>
@@ -89,7 +90,7 @@ const EmployeesTable = ({ employees, setEmployees }) => {
               />
             </td>
             <td>
-              <input type="email" defaultValue={employee.email} className='employee-input'
+              <input type="email" defaultValue={employee.email} className='employee-input email'
                 onChange={(ev) => handleUpdate(employee.employee_id, 'email', ev.target.value)}
                 onBlur={(ev) => handleSave(employee.employee_id, 'email', ev.target.value)}
               />

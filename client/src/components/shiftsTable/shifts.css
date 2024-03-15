@@ -1,26 +1,26 @@
 .container {
   display: grid;
-  width:80%;
+  width: 80%;
   min-width: 720px;
-  grid-template-columns:
-      10% repeat(28, 3.00%);
-  grid-row-gap:5px;
-  grid-column-gap:5px;
+  grid-template-columns: 10% repeat(28, 3%);
+  grid-row-gap: 5px;
+  grid-column-gap: 5px;
   justify-items: center;
-  margin-top:8%;
-  position:relative;
-  left:5%;
+  margin-top: 8%;
+  position: relative;
+  left: 5%;
 }
 
 .header {
+  text-transform: uppercase;
   font-size: 20px;
   font-weight: 700;
 }
 
 .row-header {
   margin-right: 3%;
-  width:60%;
-  text-align:center;
+  width: 60%;
+  text-align: center;
   color: rgb(222 247 243);
   border: none;
 }
@@ -32,13 +32,13 @@
 
 .grid-element {
   background-color: rgb(222 247 243);
-  width:90%;
+  width: 90%;
   justify-content: center;
   text-align: center;
   height: 90%;
   font-size: large;
   border: none;
-  border-radius:5px;
+  border-radius: 5px;
 }
 
 .grid-element:hover {
@@ -46,10 +46,10 @@
 }
 
 .colum-header-seventh {
-  color:#3da898;
+  color: #3da898;
 }
 
 .grid-element-seventh {
-  background-color:rgb(61 168 152);
-  color:rgb(222 247 243);
+  background-color: rgb(61 168 152);
+  color: rgb(222 247 243);
 }

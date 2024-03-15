@@ -1,11 +1,11 @@
 'use strict';
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors')();
 
 const router = require('./router');
 const db = require('./models/index');
-
-const PORT = 4000;
 
 const app = express();
 
@@ -17,12 +17,12 @@ app
 (async () => {
   try {
     await db.sequelize.sync();
-    console.log('connected to the db');
-    app.listen(PORT, (err) => {
+    console.log(`connected to the db - ${process.env.DATABASE}`);
+    app.listen(process.env.PORT, (err) => {
       if (err) {
         console.log('err: ', err);
       }
-      console.log(`Server running at http://localhost:${PORT}`);
+      console.log(`Server running at http://localhost:${process.env.PORT}`);
     });
   }
   catch (err) {

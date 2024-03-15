@@ -1,6 +1,8 @@
-import React from 'react';
+import { useState } from 'react';
+import { updateShift } from '../../ApiService';
 
 function Cell ({ shift, shifts, setShifts, def, className }) {
+  const [error, setError] = useState(null);
 
   const handleUpdate = (id, field, value) => {
     let updatedShifts = [...shifts];
@@ -9,16 +11,13 @@ function Cell ({ shift, shifts, setShifts, def, className }) {
   };
 
   const handleSave = (id, field, value) => {
-    fetch(`http://localhost:4000/shift/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ [field]: value }),
-    })
-      .then(response => response)
-      .catch(error => console.error(error));
+    updateShift(id, field, value)
+      .catch(error => setError({ message: error.message || 'Failed to delete employee.' }));
   };
 
-
+  if (error) {
+    return <h2 className='error'> {error.message}</h2>;
+  }
   return (
 
     <>

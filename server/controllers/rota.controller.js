@@ -3,11 +3,12 @@ const { Op } = require("sequelize");
 const db = require('../models');
 const { shiftDuration, fakeDate } = require('../convertTime');
 
-const MAXHOURS = 150;
+const MAX_HOURS = 150;
 
 async function getAllShiftsWithShiftType () {
   try {
     let shiftsCell = await db.ShiftType.findAll({
+      //Eager Loading => https://sequelize.org/docs/v6/advanced-association-concepts/eager-loading/
       include: [{
         model: db.Shift,
         required: true,
@@ -26,7 +27,12 @@ let getAllEmployees = async () => {
   try {
     let temp = await db.Employee.findAll({ raw: true });
     let employees = temp
-      .map(emp => ({ employee_id: emp.employee_id, name: `${emp.name} ${emp.surname}`, shifts: [], hours: 0 }));
+      .map(emp => ({
+        employee_id: emp.employee_id,
+        name: `${emp.name} ${emp.surname}`,
+        shifts: [],
+        hours: 0
+      }));
     return employees;
   } catch (error) {
     console.log(error);
@@ -69,7 +75,7 @@ function prioritise (employees, shiftType) {
   });
   comparisonEmployees = comparisonEmployees
     .filter(x => x.restedEnough)
-    .filter(x => x.hours < MAXHOURS)
+    .filter(x => x.hours < MAX_HOURS)
     .map(x => x.employee_id);
   return comparisonEmployees;
 }
@@ -98,7 +104,7 @@ async function generateRandomRotas () {
 
         let toBeAssigned = [];
         if (availablePeople.length < shiftType['shifts.people_required']) {
-          throw new Error('There is an issue with the number of available employees. Check you hired enough');
+          throw new Error('Insufficient staffing detected.');
         }
         toBeAssigned = availablePeople.slice(0, shiftType['shifts.people_required']);
 
@@ -137,12 +143,11 @@ exports.getRota = async (req, res) => {
     res
       .status(200)
       .send(rota);
-    // .send({ data: rota, error: null });
   } catch (error) {
     console.log(error);
     res
-      .status(500)
-      .send({ error: error.message });
+      .status(400)
+      .send({ message: error.message });
   }
 };
 

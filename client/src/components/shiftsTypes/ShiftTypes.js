@@ -1,62 +1,42 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import helper from '../helper';
-import { TiDeleteOutline } from 'react-icons//ti';
+import React, { useState } from 'react';
 import { MdDownloadDone } from 'react-icons/md';
+import { TiDeleteOutline } from 'react-icons/ti';
+import { addNewShift, addShiftType, deleteShiftType, updateShiftType } from '../../ApiService';
+import helper from '../../helper';
 import './shiftTypes.css';
 
 function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
   const [newShiftType, setNewShiftType] = useState({ description: '', abbreviation: '', start: '', end: '' });
-  const URL = 'http://localhost:4000/';
-
-  useEffect(() => {
-    fetch(`${URL}shift-types`)
-      .then(response => response.json())
-      .then(data => setShiftTypes(helper.sortShiftTypeByName(data)))
-      .catch(error => console.error(error));
-  }, [setShiftTypes]);
+  const [errorAddingShift, setErrorAddingShift] = useState(null);
+  const [errorAddingShiftType, setErrorAddingShiftType] = useState(null);
+  const [errorDeletingShiftType, setErrorDeletingShiftType] = useState(null);
+  const [errorUpdatingShiftType, setErrorUpdatingShiftType] = useState(null);
+  // const { fetchedData: employees, setFetchedData: setEmployees, error: errorFetchingEmployees, isFetching: isLoadingEmployees } = useFetch(getEmployees, []);
 
   const handleDelete = (id) => {
-    fetch(`${URL}shift-type/${id}`, {
-      method: 'DELETE',
-    })
+    deleteShiftType(id)
       .then(() => setShiftTypes(shiftTypes.filter(shift => shift.shift_type_id !== id)))
-      .catch(error => console.error(error));
+      .catch(error => setErrorDeletingShiftType({ message: error.message || 'Failed to delete shift.' }));
   };
 
   async function addShift (day_number, shift_type_id) {
     // This function adds a shift with people_required = 0 by default:
-    let shift = await fetch('http://localhost:4000/shift', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        day_number: day_number,
-        people_required: 0,
-        shift_type_id: shift_type_id,
-      }),
-    })
-      .then(response => response.json())
-      .catch(err => console.log(err));
+    let shift = await addNewShift(day_number, shift_type_id)
+      .catch(error => setErrorAddingShift({ message: error.message || 'Failed to add shift.' }));
     return shift;
   }
 
   async function handleAdd () {
-    // Adding a new shift type:
-    const newShiftTypeId = await fetch('http://localhost:4000/shift-type', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newShiftType),
-    })
-      .then(response => response.json());
-    let tmpShiftType = newShiftTypeId;
-    let updatedList = [...shiftTypes, tmpShiftType];
-    setShiftTypes(helper.sortShiftTypeByName(updatedList));
+    const newShiftTypeId = await addShiftType(newShiftType)
+      .catch(error => setErrorAddingShiftType({ message: error.message || 'Failed to add shift.' }));
+    let updatedList = [...shiftTypes, newShiftTypeId];
+    setShiftTypes(helper.sortByDescription(updatedList));
 
     // Creating 28 placeholder shifts associated with the new shift type
     // so that the shift table is pre-populated:
     let newShifts = [...Array(28).keys()].map(x => x + 1);
     newShifts = await Promise.all(newShifts.map(async (shift) => {
-      return addShift(shift, tmpShiftType.shift_type_id);
+      return addShift(shift, newShiftTypeId.shift_type_id);
     }));
     //updating shifts:
     setShifts([...shifts, ...newShifts]);
@@ -70,19 +50,30 @@ function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
 
   const handleUpdate = (id, field, value) => {
     let updatedShifts = [...shiftTypes];
-    updatedShifts = updatedShifts.map(shift => shift.shift_type_id === id ? { ...shift, [field]: value } : shift);
-    setShiftTypes(helper.sortShiftTypeByName(updatedShifts));
+    updatedShifts = updatedShifts.map(shift =>
+      shift.shift_type_id === id ? { ...shift, [field]: value } : shift
+    );
+    setShiftTypes(helper.sortByDescription(updatedShifts));
   };
 
   const handleSave = (id, field, value) => {
-    fetch(`http://localhost:4000/shift-type/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ [field]: value }),
-    })
-      .then(response => response)
-      .catch(error => console.error(error));
+    updateShiftType(id, field, value)
+      // .then(response => response)
+      .catch(error => setErrorUpdatingShiftType({ message: error.message || 'Failed to update shift.' }));
   };
+
+  if (errorAddingShift) {
+    return <h2 className='error'> {errorAddingShift.message}</h2>;
+  }
+  if (errorAddingShiftType) {
+    return <h2 className='error'> {errorAddingShiftType.message}</h2>;
+  }
+  if (errorDeletingShiftType) {
+    return <h2 className='error'> {errorDeletingShiftType.message}</h2>;
+  }
+  if (errorUpdatingShiftType) {
+    return <h2 className='error'> {errorUpdatingShiftType.message}</h2>;
+  }
 
   return (
     <table className='shifts-table'>
@@ -106,7 +97,7 @@ function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
               />
             </td>
             <td>
-              <input type="text" defaultValue={shiftType.abbreviation} className='shift-input'
+              <input type="text" defaultValue={shiftType.abbreviation} className='shift-input abr'
                 onChange={(ev) => handleUpdate(shiftType.shift_type_id, 'abbreviation', ev.target.value)}
                 onBlur={(ev) => handleSave(shiftType.shift_type_id, 'abbreviation', ev.target.value)}
               />

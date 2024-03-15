@@ -1,76 +1,89 @@
-import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { getEmployees, getShiftTypes, getShifts } from '../ApiService';
 import helper from '../helper';
-import ShiftTypes from './ShiftTypes';
-import EmployeesTable from './EmployeesTable';
+import { useFetch } from '../hooks/useFetch';
 import Home from './Home';
+import EmployeesTable from './employeesTable/EmployeesTable';
 import Rota from './rota/Rota';
 import Shifts from './shiftsTable/Shifts';
-
+import ShiftTypes from './shiftsTypes/ShiftTypes';
 
 function Redirect () {
-  const [employees, setEmployees] = useState([]);
-  const [shiftTypes, setShiftTypes] = useState([]);
-  const [shifts, setShifts] = useState([]);
+  const {
+    fetchedData: employees, setFetchedData: setEmployees, error: errorFetchingEmployees, isFetching: isLoadingEmployees
+  } = useFetch(getEmployees, []);
+  const {
+    fetchedData: shiftTypes, setFetchedData: setShiftTypes, error: errorFetchingShiftTypes, isFetching: isLoadingShiftTypes
+  } = useFetch(getShiftTypes, []);
+  const {
+    fetchedData: shifts, setFetchedData: setShifts, error: errorFetchingShifts, isFetching: isLoadingShifts
+  } = useFetch(getShifts, []);
 
-  useEffect(() => {
-    fetch('http://localhost:4000/shift-types')
-      .then(response => response.json())
-      .then(data => setShiftTypes(helper.sortShiftTypeByName(data)))
-      .catch(error => console.error(error));
-  }, [setShiftTypes]);
+  const sortedEmployees = useMemo(() => {
+    if (employees.length > 0) {
+      let temp = [...employees];
+      return helper.sortByName(temp);
+    }
+    return employees;
+  }, [employees]);
 
-  useEffect(() => {
-    fetch('http://localhost:4000/shifts')
-      .then(response => response.json())
-      .then(data => setShifts(helper.sortShiftByDate(data)))
-      .catch(error => console.error(error));
-  }, [setShifts]);
+  const sortedShiftTypes = useMemo(() => {
+    let temp = [...shiftTypes];
+    return helper.sortByDescription(temp);
+  }, [shiftTypes]);
+
+  const sortedShifts = useMemo(() => {
+    let temp = [...shifts];
+    return helper.sortShiftByDate(temp);
+  }, [shifts]);
+
+  if (errorFetchingEmployees || errorFetchingShiftTypes || errorFetchingShifts) {
+    return <h2 className='error'> {errorFetchingEmployees || errorFetchingShiftTypes || errorFetchingShifts}</h2>;
+  }
+  if (isLoadingEmployees || isLoadingShiftTypes || isLoadingShifts) {
+    return <h3 className='error' style={{ color: "whitesmoke" }}>Loading ... </h3>;
+  }
 
   return (
     <div className="redirect">
       <Routes>
-        <Route
-          path="/"
-          element={<Home
-            shifts={shifts}
-            setShifts={setShifts}
-            shiftTypes={shiftTypes}
-          />}
-        />
+        <Route path="/" element={<Home />} />
 
         <Route
           path="/employees"
           element={<EmployeesTable
-            employees={employees}
+            error={errorFetchingEmployees}
+            isLoading={isLoadingEmployees}
+            employees={sortedEmployees}
             setEmployees={setEmployees}
-          />} />
+          />}
+        />
 
         <Route
           path="/shifts"
           element={<Shifts
-            shifts={shifts}
+            shifts={sortedShifts}
             setShifts={setShifts}
-            shiftTypes={shiftTypes}
+            shiftTypes={sortedShiftTypes}
           />}
         />
 
         <Route
           path="/shift-types"
           element={<ShiftTypes
-            shiftTypes={shiftTypes}
+            shiftTypes={sortedShiftTypes}
             setShiftTypes={setShiftTypes}
-            employees={employees}
-            shifts={shifts}
+            employees={sortedEmployees}
+            shifts={sortedShifts}
             setShifts={setShifts}
           />}
         />
 
-
         <Route
           path="/rota"
           element={<Rota
-            shiftTypes={shiftTypes}
+            shiftTypes={sortedShiftTypes}
           />}
         />
 

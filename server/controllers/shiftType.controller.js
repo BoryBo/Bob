@@ -11,7 +11,7 @@ exports.getAllShiftTypes = async (req, res) => {
     console.log(error);
     res
       .status(500)
-      .send(error);
+      .send({ message: error.message });
   }
 };
 
@@ -30,9 +30,7 @@ exports.addShiftType = async (req, res) => {
   } catch (error) {
     res
       .status(400)
-      .send({
-        errors: error
-      });
+      .send({ message: error.message });
   }
 };
 
@@ -45,13 +43,11 @@ exports.deleteShiftType = async (req, res) => {
     });
     res
       .status(200)
-      .json({
-        message: ` Shift type deleted successfully`,
-      });
+      .send(` Shift type deleted successfully`);
   } catch (error) {
     res
       .status(500)
-      .send(error);
+      .send({ message: error.message });
   }
 };
 
@@ -65,10 +61,10 @@ exports.updateShiftType = async (req, res) => {
     await temp.save();
     res
       .status(200)
-      .send(`Shift type with id:${id} was updated successfully.`);
+      .send({ message: `Shift type with id:${id} was updated successfully.` });
   } catch (error) {
     res
       .status(500)
-      .send(error);
+      .send({ message: error.message });
   }
 };

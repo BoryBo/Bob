@@ -11,30 +11,41 @@ exports.getAllEmployees = async (req, res) => {
     console.log(error);
     res
       .status(500)
-      .send(error);
+      .send({ message: error.message });
   }
 };
 
 exports.addEmployee = async (req, res) => {
   try {
-    let newEmployee = await db.Employee.create({
-      name: req.body.name,
-      surname: req.body.surname,
-      email: req.body.email
-    });
+    if (
+      req.body.name === null ||
+      req.body.name.trim() === '' ||
+      req.body.email === null ||
+      !req.body.email.includes('@') ||
+      req.body.surname === null ||
+      req.body.surname.trim() === ''
+    ) {
+      throw new Error(' Please fill out all fields to proceed.');
+    }
+    let employees = await db.Employee.findAll();
+    let employeeExists = employees.filter(x => x.email === req.body.email);
+    if (employeeExists.length === 0) {
+      let newEmployee = await db.Employee.create({
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email
+      });
+      res
+        .status(201)
+        .send(newEmployee);
 
-    console.log("Employee added");
-
-    res
-      .status(201)
-      .send(newEmployee);
+    } else {
+      throw new Error(` An employee with email: ${req.body.email} already exists`);
+    }
   } catch (error) {
-    console.log(error);
     res
       .status(400)
-      .send({
-        errors: error
-      });
+      .send({ message: error.message });
   }
 };
 
@@ -47,14 +58,12 @@ exports.deleteEmployee = async (req, res) => {
 
     res
       .status(200)
-      .json({
-        message: ` Employee deleted successfully`,
-      });
+      .send(`Employee deleted successfully`);
   } catch (error) {
     console.log(error);
     res
       .status(500)
-      .send(error);
+      .send({ message: error.message });
   }
 };
 
@@ -72,11 +81,11 @@ exports.updateEmployee = async (req, res) => {
     await temp.save();
     res
       .status(200)
-      .send(`Empoyee with id:${id} was updated successfully.`);
+      .send({ message: "Employee successfully updated" });
   } catch (error) {
     console.log(error);
     res
       .status(500)
-      .send(error);
+      .send({ message: error.message });
   }
 };

@@ -1,18 +1,17 @@
 'use strict';
-
+require('dotenv').config();
 const Sequelize = require('sequelize');
-const config = require('./db.config.json');
 
 const db = {};
 
 const sequelize = new Sequelize(
-  config.testDatabase,
-  config.user,
-  config.password,
+  process.env.DATABASE,
+  process.env.USER,
+  process.env.PASSWORD,
   {
-    host: config.host,
-    dialect: config.dialect,
-    logging: config.logging,
+    host: process.env.HOST,
+    dialect: 'postgres',
+    logging: false,
   }
 );
 
@@ -32,4 +31,5 @@ db.ShiftType.hasMany(db.Shift, {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+//console.log(db.Sequelize.DataTypes);
 module.exports = db;

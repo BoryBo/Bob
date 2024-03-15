@@ -1,0 +1,20 @@
+.error-outer {
+  position: relative;
+  top: 50vh;
+  text-align: center;
+  background-color: rgb(202, 8, 8);
+  width: 50%;
+  margin: 0 auto;
+  padding: 10px;
+  font-family: 'Fredoka';
+  border-radius: 24px;
+  font-weight: 400;
+  font-size: 26px;
+}
+.error-inner {
+  background-color: rgb(255, 166, 166);
+  outline: 3px solid #1b1510;
+  border-radius: 16px;
+  padding: 8px;
+  color: #2c2306;
+}

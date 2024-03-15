@@ -4,7 +4,6 @@ import Row from './Row';
 
 function Shifts ({ shifts, setShifts, shiftTypes }) {
 
-
   return (
     <div className="container">
       <div className="empty"></div>

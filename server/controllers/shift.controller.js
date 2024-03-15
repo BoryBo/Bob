@@ -11,7 +11,7 @@ exports.getAllShifts = async (req, res) => {
     console.log(error);
     res
       .status(500)
-      .send(error);
+      .send({ message: error.message });
   }
 };
 
@@ -28,9 +28,7 @@ exports.addShift = async (req, res) => {
   } catch (error) {
     res
       .status(400)
-      .send({
-        errors: error
-      });
+      .send({ message: error.message });
   }
 };
 
@@ -42,13 +40,11 @@ exports.deleteShift = async (req, res) => {
     });
     res
       .status(200)
-      .json({
-        message: `Shift deleted successfully`,
-      });
+      .send({message:`Shift deleted successfully`});
   } catch (error) {
     res
       .status(500)
-      .send(error);
+      .send({ message: error.message });
   }
 };
 
@@ -62,10 +58,10 @@ exports.updateShift = async (req, res) => {
     await temp.save();
     res
       .status(200)
-      .send(`Shift with id:${id} was updated successfully.`);
+      .send({ message: `Shift with id:${id} was updated successfully.` })
   } catch (error) {
     res
       .status(500)
-      .send(error);
+      .send({ message: error.message });
   }
 };
