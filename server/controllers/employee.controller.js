@@ -8,7 +8,6 @@ exports.getAllEmployees = async (req, res) => {
       .status(200)
       .send(employees);
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .send({ message: error.message });
@@ -60,7 +59,6 @@ exports.deleteEmployee = async (req, res) => {
       .status(200)
       .send(`Employee deleted successfully`);
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .send({ message: error.message });
@@ -83,7 +81,6 @@ exports.updateEmployee = async (req, res) => {
       .status(200)
       .send({ message: "Employee successfully updated" });
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .send({ message: error.message });

@@ -8,7 +8,6 @@ exports.getAllShifts = async (req, res) => {
       .status(200)
       .send(shifts);
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .send({ message: error.message });

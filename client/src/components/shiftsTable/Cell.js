@@ -3,20 +3,25 @@ import { updateShift } from '../../ApiService';
 
 function Cell ({ shift, shifts, setShifts, def, className }) {
   const [error, setError] = useState(null);
+  const [shiftState, setShiftState] = useState({ ...shift });
 
-  const handleUpdate = (id, field, value) => {
+  const handleChange = (id, field, value) => {
+    if (value !== '' && isNaN(value)) {
+      setError({ message: 'Please enter a valid number.' });
+      return;
+    }
+    const updatedValue = value || 0;
+    const updatedShift = { ...shiftState, [field]: updatedValue };
     let updatedShifts = [...shifts];
-    updatedShifts = updatedShifts.map(shift => shift.shift_id === id ? { ...shift, [field]: value } : shift);
+    updatedShifts = updatedShifts.map(shift => shift.shift_id === id ? updatedShift : shift);
+    updateShift(id, updatedShift)
+      .catch(error => setError({ message: error.message || 'Failed to update shift.' }));
+    setShiftState(updatedShift);
     setShifts(updatedShifts);
   };
 
-  const handleSave = (id, field, value) => {
-    updateShift(id, field, value)
-      .catch(error => setError({ message: error.message || 'Failed to delete employee.' }));
-  };
-
   if (error) {
-    return <h2 className='error'> {error.message}</h2>;
+    return <h2 className='error' > <p >{error.message}</p></h2>;
   }
   return (
 
@@ -26,8 +31,8 @@ function Cell ({ shift, shifts, setShifts, def, className }) {
         defaultValue={def}
         className={`grid-element ${className}`}
         name='people_required'
-        onChange={(ev) => handleUpdate(shift.shift_id, 'people_required', ev.target.value)}
-        onBlur={(ev) => handleSave(shift.shift_id, 'people_required', ev.target.value)}
+        onChange={(ev) => handleChange(shift.shift_id, 'people_required', ev.target.value)}
+        onBlur={(ev) => handleChange(shift.shift_id, 'people_required', ev.target.value)}
       />
     </>);
 }

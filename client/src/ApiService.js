@@ -60,7 +60,6 @@ export const updateEmployee = async (id, field, value) => {
       throw new Error(`Failed to update employee: ${response.status}`);
     }
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     throw error;
@@ -152,16 +151,12 @@ export const getShifts = async () => {
   }
 };
 
-export const addNewShift = async (day_number, shift_type_id) => {
+export const addNewShift = async (newShift) => {
   try {
     const response = await fetch(`${URL}/shift`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        day_number: day_number,
-        people_required: 0,
-        shift_type_id: shift_type_id,
-      }),
+      body: JSON.stringify(newShift),
     });
     if (!response.ok) {
       const errorData = await response.json();
@@ -188,12 +183,13 @@ export const deleteShift = async (id) => {
 };
 
 
-export const updateShift = async (id, field, value) => {
+export const updateShift = async (id, shift) => {
+  // export const updateShift = async (id, field, value) => {
   try {
     const response = await fetch(`${URL}/shift/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ [field]: value }),
+      body: JSON.stringify(shift),
     });
     if (!response.ok) {
       throw new Error(`Failed to update shift: ${response.status}`);

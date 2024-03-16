@@ -53,3 +53,11 @@
   background-color: rgb(61 168 152);
   color: rgb(222 247 243);
 }
+
+.error > p {
+  background-color: rgb(223, 250, 252);
+  width: 30vw;
+  position: absolute;
+  padding: 10px;
+  border-radius: 6px;
+}

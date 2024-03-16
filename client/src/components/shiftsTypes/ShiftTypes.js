@@ -7,11 +7,15 @@ import './shiftTypes.css';
 
 function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
   const [newShiftType, setNewShiftType] = useState({ description: '', abbreviation: '', start: '', end: '' });
+  const [newShift, setNewShift] = useState({
+    day_number: '',
+    people_required: 0,
+    shift_type_id: '',
+  });
   const [errorAddingShift, setErrorAddingShift] = useState(null);
   const [errorAddingShiftType, setErrorAddingShiftType] = useState(null);
   const [errorDeletingShiftType, setErrorDeletingShiftType] = useState(null);
   const [errorUpdatingShiftType, setErrorUpdatingShiftType] = useState(null);
-  // const { fetchedData: employees, setFetchedData: setEmployees, error: errorFetchingEmployees, isFetching: isLoadingEmployees } = useFetch(getEmployees, []);
 
   const handleDelete = (id) => {
     deleteShiftType(id)
@@ -21,8 +25,10 @@ function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
 
   async function addShift (day_number, shift_type_id) {
     // This function adds a shift with people_required = 0 by default:
-    let shift = await addNewShift(day_number, shift_type_id)
+    const updatedShift = { ...newShift, day_number, shift_type_id };
+    let shift = await addNewShift(updatedShift)
       .catch(error => setErrorAddingShift({ message: error.message || 'Failed to add shift.' }));
+    setNewShift(updatedShift);
     return shift;
   }
 

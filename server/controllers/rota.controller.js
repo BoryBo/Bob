@@ -19,14 +19,14 @@ async function getAllShiftsWithShiftType () {
     });
     return shiftsCell;
   } catch (error) {
-    console.log(error);
+    throw new Error("Failed to retrieve shifts and their type.");
   }
 };
 
 let getAllEmployees = async () => {
   try {
-    let temp = await db.Employee.findAll({ raw: true });
-    let employees = temp
+    let employees = await db.Employee.findAll({ raw: true });
+    employees = employees
       .map(emp => ({
         employee_id: emp.employee_id,
         name: `${emp.name} ${emp.surname}`,
@@ -35,24 +35,27 @@ let getAllEmployees = async () => {
       }));
     return employees;
   } catch (error) {
-    console.log(error);
+    throw new Error("Failed to retrieve employee data");
   }
 };
 
 async function expandShiftsWithShiftType () {
-  let days = [...Array(28).keys()].reduce((acc, elem) => { return { ...acc, ...{ [elem + 1]: [] } }; }, {});
+  let days1 = [...Array(28).keys()].reduce((acc, elem) => { return { ...acc, ...{ [elem + 1]: [] } }; }, {});
+  let days = {};
+  let arrOfArrays = Array(28).fill(null).map((_, i) => (days[i + 1] = []));
+  // days =>  { '1': [], '2': [], ...}
   try {
-    let inp = await getAllShiftsWithShiftType();
-    let out = inp
+    let shiftsWithShiftType = await getAllShiftsWithShiftType();
+    shiftsWithShiftType = shiftsWithShiftType
       .filter(shift => shift['shifts.people_required'] > 0)
       .map(shift => { return { ...shift, 'assignedEmployees': [] }; });
-    out.forEach(shift => {
-      let d = shift['shifts.day_number'].toString();
-      days[d].push(shift);
+    shiftsWithShiftType.forEach(shift => {
+      let dayNumber = shift['shifts.day_number'].toString();
+      days[dayNumber].push(shift);
     });
-    return days;
+    return days; //each day =>  [{shift...},{shift....}]
   } catch (err) {
-    console.log(err);
+    throw new Error("Failed to process shifts");
   }
 };
 
@@ -144,7 +147,6 @@ exports.getRota = async (req, res) => {
       .status(200)
       .send(rota);
   } catch (error) {
-    console.log(error);
     res
       .status(400)
       .send({ message: error.message });

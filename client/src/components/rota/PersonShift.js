@@ -6,7 +6,7 @@ function PersonShift ({ shift, abbreviations }) {
       <div
         type='text'
         name='single_shift'
-        className={`shift shift-${abbreviations[shift.abbreviation]}`}
+        className={`shift default-bg shift-${abbreviations[shift.abbreviation]}`}
       >
         {shift.abbreviation}
       </div>

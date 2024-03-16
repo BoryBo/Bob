@@ -8,7 +8,6 @@ exports.getAllShiftTypes = async (req, res) => {
       .status(200)
       .send(shiftTypes);
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .send({ message: error.message });
