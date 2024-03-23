@@ -1,11 +1,25 @@
 const URL = process.env.REACT_APP_BASE_URL;
 
-//! employee methods
-export const getEmployees = async () => {
+export const getUser = async (id) => {
   try {
-    const response = await fetch(`${URL}/employees`);
+    const response = await fetch(`${URL}/user/${id}`);
     if (!response.ok) {
-      // throw new Error(`Error fetching employees: ${response.status}`);
+      const errorData = await response.json();
+      throw new Error(`Error fetching user's data: ${errorData.message}`);
+    } else {
+      const data = await response.json();
+      return data;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+//! employee methods
+export const getEmployees = async (userId) => {
+  try {
+    const response = await fetch(`${URL}/employees/${userId}`);
+    if (!response.ok) {
       const errorData = await response.json();
       throw new Error(`Error fetching employees: ${errorData.message}`);
     } else {
@@ -13,14 +27,13 @@ export const getEmployees = async () => {
       return data;
     }
   } catch (error) {
-    console.error("Error:", error);
     throw error;
   }
 };
 
-export const addEmployee = async (newEmployee) => {
+export const addEmployee = async (newEmployee, userId) => {
   try {
-    const response = await fetch(`${URL}/employee`, {
+    const response = await fetch(`${URL}/employee/${userId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newEmployee),
@@ -36,9 +49,9 @@ export const addEmployee = async (newEmployee) => {
   }
 };
 
-export const deleteEmployee = async (id) => {
+export const deleteEmployee = async (id, userId) => {
   try {
-    const response = await fetch(`${URL}/employees/${id}`, {
+    const response = await fetch(`${URL}/employees/${id}/${userId}`, {
       method: "DELETE"
     });
     if (!response.ok) {
@@ -49,9 +62,9 @@ export const deleteEmployee = async (id) => {
   }
 };
 
-export const updateEmployee = async (id, field, value) => {
+export const updateEmployee = async (id, field, value, userId) => {
   try {
-    const response = await fetch(`${URL}/employee/${id}`, {
+    const response = await fetch(`${URL}/employee/${id}/${userId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ [field]: value }),
@@ -68,9 +81,9 @@ export const updateEmployee = async (id, field, value) => {
 
 //! shift type
 
-export const getShiftTypes = async () => {
+export const getShiftTypes = async (userId) => {
   try {
-    const response = await fetch(`${URL}/shift-types`);
+    const response = await fetch(`${URL}/shift-types/${userId}`);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(`Error fetching shifts: ${errorData.message}`);
@@ -84,9 +97,9 @@ export const getShiftTypes = async () => {
   }
 };
 
-export const addShiftType = async (newShiftType) => {
+export const addShiftType = async (newShiftType, userId) => {
   try {
-    const response = await fetch(`${URL}/shift-type`, {
+    const response = await fetch(`${URL}/shift-type/${userId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newShiftType),
@@ -103,9 +116,9 @@ export const addShiftType = async (newShiftType) => {
 };
 
 
-export const deleteShiftType = async (id) => {
+export const deleteShiftType = async (id, userId) => {
   try {
-    const response = await fetch(`${URL}/shift-type/${id}`, {
+    const response = await fetch(`${URL}/shift-type/${id}/${userId}`, {
       method: "DELETE"
     });
     if (!response.ok) {
@@ -116,9 +129,9 @@ export const deleteShiftType = async (id) => {
   }
 };
 
-export const updateShiftType = async (id, field, value) => {
+export const updateShiftType = async (id, field, value, userId) => {
   try {
-    const response = await fetch(`${URL}/shift-type/${id}`, {
+    const response = await fetch(`${URL}/shift-type/${id}/${userId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ [field]: value }),
@@ -135,9 +148,9 @@ export const updateShiftType = async (id, field, value) => {
 
 //! shifts
 
-export const getShifts = async () => {
+export const getShifts = async (userId) => {
   try {
-    const response = await fetch(`${URL}/shifts`);
+    const response = await fetch(`${URL}/shifts/${userId}`);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(`Error fetching shifts: ${errorData.message}`);
@@ -151,9 +164,9 @@ export const getShifts = async () => {
   }
 };
 
-export const addNewShift = async (newShift) => {
+export const addNewShift = async (newShift, userId) => {
   try {
-    const response = await fetch(`${URL}/shift`, {
+    const response = await fetch(`${URL}/shift/${userId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newShift),
@@ -169,9 +182,9 @@ export const addNewShift = async (newShift) => {
   }
 };
 
-export const deleteShift = async (id) => {
+export const deleteShift = async (id, userId) => {
   try {
-    const response = await fetch(`${URL}/shift/${id}`, {
+    const response = await fetch(`${URL}/shift/${id}/${userId}`, {
       method: "DELETE"
     });
     if (!response.ok) {
@@ -183,10 +196,10 @@ export const deleteShift = async (id) => {
 };
 
 
-export const updateShift = async (id, shift) => {
+export const updateShift = async (id, shift, userId) => {
   // export const updateShift = async (id, field, value) => {
   try {
-    const response = await fetch(`${URL}/shift/${id}`, {
+    const response = await fetch(`${URL}/shift/${id}/${userId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(shift),
@@ -202,9 +215,9 @@ export const updateShift = async (id, shift) => {
 };
 
 //! rota
-export const getRota = async () => {
+export const getRota = async (userId) => {
   try {
-    const response = await fetch(`${URL}/rota`);
+    const response = await fetch(`${URL}/rota/${userId}`);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(`${errorData.message}`);

@@ -28,17 +28,17 @@
 }
 
 .default-bg {
-  background-color: rgb(222 247 243);
+  background-color: var(--off-white);
 }
 
 .shift-0 {
-  background-color: rgb(120 194 224);
+  background-color:var(--text-blue);
 }
 .shift-1 {
-  background-color: rgb(215, 252, 246);
+  background-color: var(--off-white);
 }
 .shift-2 {
-  background-color: rgb(61 168 152);
+  background-color:var(--scrub-green);
 }
 .shift-3 {
   background-color: rgb(70 104 109);
@@ -63,14 +63,12 @@
 }
 
 .column-header {
-  color: rgb(222 247 243);
+  color:var(--off-white);
   font-size: 20px;
-  font-weight: 700;
 }
 
 .colum-header-seventh {
-  color: rgb(61 168 152);
-  font-weight: 900;
+  color:var(--scrub-green);
 }
 
 .rota-row-header {
@@ -82,7 +80,7 @@
   width: auto;
   text-transform: capitalize;
   text-align: center;
-  color: rgb(222 247 243);
+  color:var(--off-white);
   border: none;
   font-size: 16px;
   font-weight: 700;
@@ -94,7 +92,7 @@
 }
 
 .tot-hours {
-  font-size: 12px;
-  color: aqua;
+  font-size: 13px;
+  color:var(--text-blue);
   text-transform: lowercase;
 }

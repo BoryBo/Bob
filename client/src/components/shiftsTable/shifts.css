@@ -21,17 +21,17 @@
   margin-right: 3%;
   width: 60%;
   text-align: center;
-  color: rgb(222 247 243);
+  color: var(--off-white);
   border: none;
 }
 
 .column-header {
   /* border:1px solid rgb(38, 19, 160); */
-  color: rgb(222 247 243);
+  color: var(--off-white);
 }
 
 .grid-element {
-  background-color: rgb(222 247 243);
+  background-color: var(--off-white);
   width: 90%;
   justify-content: center;
   text-align: center;
@@ -42,20 +42,20 @@
 }
 
 .grid-element:hover {
-  background-color: rgb(120 194 224);
+  background-color: var(--text-blue);
 }
 
 .colum-header-seventh {
-  color: #3da898;
+  color: var(--scrub-green);
 }
 
 .grid-element-seventh {
-  background-color: rgb(61 168 152);
-  color: rgb(222 247 243);
+  background-color: var(--scrub-green);
+  color: var(--off-white);
 }
 
 .error > p {
-  background-color: rgb(223, 250, 252);
+  background-color: var(--off-white);
   width: 30vw;
   position: absolute;
   padding: 10px;

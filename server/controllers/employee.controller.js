@@ -3,7 +3,11 @@ const db = require('../models');
 
 exports.getAllEmployees = async (req, res) => {
   try {
-    let employees = await db.Employee.findAll();
+    const { userId } = req.params;
+    console.log('getAllEmp ******************', userId);
+    let employees = await db.Employee.findAll({
+      where: { user_id: userId }
+    });
     res
       .status(200)
       .send(employees);
@@ -16,6 +20,8 @@ exports.getAllEmployees = async (req, res) => {
 
 exports.addEmployee = async (req, res) => {
   try {
+    const { userId } = req.params;
+    console.log('AddEmp ******************', userId);
     if (
       req.body.name === null ||
       req.body.name.trim() === '' ||
@@ -32,7 +38,8 @@ exports.addEmployee = async (req, res) => {
       let newEmployee = await db.Employee.create({
         name: req.body.name,
         surname: req.body.surname,
-        email: req.body.email
+        email: req.body.email,
+        user_id: userId
       });
       res
         .status(201)
@@ -50,9 +57,13 @@ exports.addEmployee = async (req, res) => {
 
 exports.deleteEmployee = async (req, res) => {
   let id = req.params.id;
+  const { userId } = req.params;
+  console.log('DeleteEmp ******************', userId);
   try {
     await db.Employee.destroy({
-      where: { employee_id: id }
+      where: {
+        employee_id: id, user_id: userId
+      }
     });
 
     res
@@ -68,10 +79,13 @@ exports.deleteEmployee = async (req, res) => {
 
 exports.updateEmployee = async (req, res) => {
   let id = req.params.id;
+  const { userId } = req.params;
+  console.log('UpdateEmp ******************', userId);
   try {
     let toBeUpdatedArr = await db.Employee.findAll({
       where: {
-        employee_id: id
+        employee_id: id,
+        user_id: userId
       }
     });
     let temp = toBeUpdatedArr[0];

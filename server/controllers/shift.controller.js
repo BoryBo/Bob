@@ -3,7 +3,11 @@ const db = require('../models');
 
 exports.getAllShifts = async (req, res) => {
   try {
-    let shifts = await db.Shift.findAll();
+    const { userId } = req.params;
+    console.log('get all Shifts ******************', userId);
+    let shifts = await db.Shift.findAll({
+      where: { user_id: userId }
+    });
     res
       .status(200)
       .send(shifts);
@@ -16,10 +20,13 @@ exports.getAllShifts = async (req, res) => {
 
 exports.addShift = async (req, res) => {
   try {
+    const { userId } = req.params;
+    console.log('Add Shift  ******************', userId);
     let newShift = await db.Shift.create({
       day_number: req.body.day_number,
       people_required: req.body.people_required,
       shift_type_id: req.body.shift_type_id,
+      user_id: userId
     });
     res
       .status(201)
@@ -33,13 +40,15 @@ exports.addShift = async (req, res) => {
 
 exports.deleteShift = async (req, res) => {
   let id = req.params.id;
+  const { userId } = req.params;
+  console.log('DeleteShift ******************', userId);
   try {
     await db.Shift.destroy({
-      where: { shift_id: id }
+      where: { shift_id: id, user_id: userId }
     });
     res
       .status(200)
-      .send({message:`Shift deleted successfully`});
+      .send({ message: `Shift deleted successfully` });
   } catch (error) {
     res
       .status(500)
@@ -50,14 +59,18 @@ exports.deleteShift = async (req, res) => {
 
 exports.updateShift = async (req, res) => {
   let id = req.params.id;
+  const { userId } = req.params;
+  console.log('Update Shift ******************', userId);
   try {
-    let toBeUpdatedArr = await db.Shift.findAll({ where: { shift_id: id } });
+    let toBeUpdatedArr = await db.Shift.findAll({
+      where: { shift_id: id, user_id: userId }
+    });
     let temp = toBeUpdatedArr[0];
     await temp.set({ ...req.body });
     await temp.save();
     res
       .status(200)
-      .send({ message: `Shift with id:${id} was updated successfully.` })
+      .send({ message: `Shift with id:${id} was updated successfully.` });
   } catch (error) {
     res
       .status(500)

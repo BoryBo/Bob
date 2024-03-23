@@ -1,3 +1,4 @@
+import { UserButton } from "@clerk/clerk-react";
 import React, { useMemo } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { getEmployees, getShiftTypes, getShifts } from '../ApiService';
@@ -8,6 +9,7 @@ import EmployeesTable from './employeesTable/EmployeesTable';
 import Rota from './rota/Rota';
 import Shifts from './shiftsTable/Shifts';
 import ShiftTypes from './shiftsTypes/ShiftTypes';
+
 
 function Redirect () {
   const {
@@ -47,8 +49,12 @@ function Redirect () {
 
   return (
     <div className="redirect">
+
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={<Home />}
+        />
 
         <Route
           path="/employees"
@@ -89,6 +95,9 @@ function Redirect () {
 
         <Route path="*" element={<h1> Invalid Url</h1>} />
       </Routes>
+      <UserButton showName afterSignOutUrl='/sign-in' />
+
+
     </div>
   );
 }

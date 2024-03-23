@@ -17,16 +17,16 @@
   padding-bottom: 10px;
   background-color: transparent;
   border: none;
-  color: rgb(120 194 224);
+  color: rgb(134, 213, 244);
   text-transform: capitalize;
 }
 
-.email{
+.email {
   text-transform: lowercase;
 }
 
 .employee-input:focus {
-  outline-color: rgb(11, 156, 179);
+  outline-color: var(--scrub-green);
   outline-style: ridge;
   border-radius: 5px;
   padding: 10px;
@@ -52,9 +52,9 @@ tr:hover {
   background-color: rgba(43, 69, 80, 0.07);
 }
 
-th {
+table-head > th {
   height: 40px;
-  color: rgb(222 247 243);
+  color: var(--off-white);
   font-size: 22px;
   font-weight: 900;
   text-align: start;

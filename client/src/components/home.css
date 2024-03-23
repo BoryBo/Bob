@@ -8,11 +8,11 @@
 }
 
 .bgr > h1 {
-  color:rgb(222 247 243);
+  color:var(--off-white);
   margin-left:10%
 }
 
 .bgr > p {
-  color:rgb(120 194 224);
+  color:var(--text-blue);
   margin-left:8%
 }

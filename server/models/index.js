@@ -18,6 +18,7 @@ const sequelize = new Sequelize(
 db.Employee = require('./employee')(sequelize, Sequelize.DataTypes);
 db.Shift = require('./shift')(sequelize, Sequelize.DataTypes);
 db.ShiftType = require('./shiftType')(sequelize, Sequelize.DataTypes);
+db.User = require('./user')(sequelize, Sequelize.DataTypes);
 
 db.Shift.belongsToMany(db.Employee, { through: 'employees_shifts', onDelete: 'cascade' });
 db.ShiftType.hasMany(db.Shift, {
@@ -27,6 +28,31 @@ db.ShiftType.hasMany(db.Shift, {
   },
   onDelete: 'cascade'
 });
+
+db.User.hasMany(db.Employee, {
+  foreignKey: {
+    name: "user_id",
+    field: "user_id"
+  },
+  onDelete: "cascade",
+});
+
+db.User.hasMany(db.ShiftType, {
+  foreignKey: {
+    name: "user_id",
+    field: "user_id"
+  },
+  onDelete: "cascade",
+});
+
+db.User.hasMany(db.Shift, {
+  foreignKey: {
+    name: "user_id",
+    field: "user_id"
+  },
+  onDelete: "cascade",
+});
+
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

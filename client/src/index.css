@@ -1,8 +1,14 @@
+:root {
+  --scrub-green: #3da898;
+  --off-white: #f3fefc;
+  --dark-gray: #23272a;
+  --text-blue: #78c2e0;
+}
 body {
   margin: 0;
   width: 100%;
   height: 100%;
-  background-color: rgb(35, 39, 42);
+  background-color: var(--dark-gray);
   font-family: 'Poppins';
 }
 
@@ -23,7 +29,8 @@ code {
 .Nav {
   height: 100%;
   width: 200px;
-  background-color: rgb(61 168 152);
+  background-color: var(--scrub-green);
+  position: relative;
 }
 
 .nav-list {
@@ -33,15 +40,15 @@ code {
 }
 
 .nav-selected {
-  background-color: rgb(35, 39, 42);
+  background-color: var(--dark-gray);
 }
 
 .nav-not-selected {
-  background-color: rgb(61 168 152);
+  background-color: var(--scrub-green);
 }
 
 .nav-row:hover {
-  background-color: rgb(35, 39, 42);
+  background-color: #23272a9a;
   cursor: pointer;
 }
 
@@ -58,7 +65,7 @@ code {
 
 a {
   text-decoration: none;
-  color: rgb(222 247 243);
+  color: var(--off-white);
   width: 100%;
   display: flex;
   align-content: center;
@@ -83,3 +90,21 @@ svg {
   font-size: 26px;
   text-align: center;
 }
+
+/* --------- clerk -------- */
+.cl-userButtonBox {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: transparent;
+  /* flex-direction: row-reverse; */
+}
+.cl-userButtonBox > p {
+  color: var(--scrub-green);
+}
+.cl-userButtonTrigger > div {
+  outline: 2px solid var(--scrub-green);
+  width: 50px;
+  height: 50px;
+}
+

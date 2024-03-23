@@ -1,0 +1,24 @@
+.auth-btn {
+  width: 90%;
+  margin: 5%;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  height: 50px;
+  font-size: large;
+  background-color: rgb(35, 39, 42);
+  color: var(--text-blue);
+  border-radius: 45px;
+}
+
+.sign-in {
+  color: rgb(243, 254, 252);
+}
+
+.sign-out {
+  bottom: 10px;
+}
+
+.auth-btn:hover {
+  color: var(--off-white);
+}
