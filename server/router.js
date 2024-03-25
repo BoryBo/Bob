@@ -7,25 +7,25 @@ const rotaController = require('./controllers/rota.controller');
 const userController = require('./controllers/user.controller');
 
 //employee methods
-router.get('/employees/:user-id', employeeController.getAllEmployees);
-router.post('/employee/:user-id', employeeController.addEmployee);
-router.delete('/employees/:id/:user-id', employeeController.deleteEmployee);
-router.put('/employee/:id/:user-id', employeeController.updateEmployee);
+router.get('/employees/:userId', employeeController.getAllEmployees);
+router.post('/employee/:userId', employeeController.addEmployee);
+router.delete('/employees/:id/:userId', employeeController.deleteEmployee);
+router.put('/employee/:id/:userId', employeeController.updateEmployee);
 
 //shift type methods
-router.get('/shift-types/:user-id', shiftTypeController.getAllShiftTypes);
-router.post('/shift-type/:user-id', shiftTypeController.addShiftType);
-router.delete('/shift-type/:id/:user-id', shiftTypeController.deleteShiftType);
-router.put('/shift-type/:id/:user-id', shiftTypeController.updateShiftType);
+router.get('/shift-types/:userId', shiftTypeController.getAllShiftTypes);
+router.post('/shift-type/:userId', shiftTypeController.addShiftType);
+router.delete('/shift-type/:id/:userId', shiftTypeController.deleteShiftType);
+router.put('/shift-type/:id/:userId', shiftTypeController.updateShiftType);
 
 //shift methods
-router.get('/shifts/:user-id', shiftController.getAllShifts);
-router.post('/shift/:user-id', shiftController.addShift);
-router.delete('/shift/:id/:user-id', shiftController.deleteShift);
-router.put('/shift/:id/:user-id', shiftController.updateShift);
+router.get('/shifts', shiftController.getAllShifts);
+router.post('/shift', shiftController.addShift);
+router.delete('/shift/:id', shiftController.deleteShift);
+router.put('/shift/:id', shiftController.updateShift);
 
 //rota methods
-router.get('/rota/:user-id', rotaController.getRota);
+router.get('/rota/:userId', rotaController.getRota);
 
 //user
 router.get('/user/:id', userController.getUser);

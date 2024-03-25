@@ -1,12 +1,9 @@
 'use strict';
-const { where } = require('sequelize');
 const db = require('../models');
-const { use } = require('../router');
 
 exports.getAllShiftTypes = async (req, res) => {
   try {
     const { userId } = req.params;
-    console.log('get All ShiftTypes ******************', userId);
     let shiftTypes = await db.ShiftType.findAll({
       where: { user_id: userId }
     });
@@ -23,7 +20,6 @@ exports.getAllShiftTypes = async (req, res) => {
 exports.addShiftType = async (req, res) => {
   try {
     const { userId } = req.params;
-    console.log('Add Shifttype ******************', userId);
     let newShiftType = await db.ShiftType.create({
       description: req.body.description,
       abbreviation: req.body.abbreviation,
@@ -44,7 +40,6 @@ exports.addShiftType = async (req, res) => {
 exports.deleteShiftType = async (req, res) => {
   let id = req.params.id;
   const { userId } = req.params;
-  console.log('Delete ShiftType ******************', userId);
   try {
     await db.ShiftType.destroy({
       where: {
@@ -66,8 +61,6 @@ exports.deleteShiftType = async (req, res) => {
 exports.updateShiftType = async (req, res) => {
   let id = req.params.id;
   const { userId } = req.params;
-  console.log('Update Shifttype ******************', userId);
-
   try {
     let toBeUpdatedArr = await db.ShiftType.findAll({
       where:

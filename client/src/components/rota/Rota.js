@@ -1,15 +1,18 @@
-import React, { useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { getRota } from '../../ApiService';
+import { UserContext } from '../../context/UserContext';
 import helper from '../../helper';
 import { useFetch } from '../../hooks/useFetch';
 import PersonRow from './PersonRow';
 import './rota.css';
+
 function Rota ({ shiftTypes }) {
+  const { userId } = useContext(UserContext);
   const {
     isFetching: isLoading,
     fetchedData: rota,
     error
-  } = useFetch(getRota, []);
+  } = useFetch(getRota, [], userId);
 
   const sortedRotaNames = useMemo(() => {
     let temp = [...rota];

@@ -148,9 +148,9 @@ export const updateShiftType = async (id, field, value, userId) => {
 
 //! shifts
 
-export const getShifts = async (userId) => {
+export const getShifts = async () => {
   try {
-    const response = await fetch(`${URL}/shifts/${userId}`);
+    const response = await fetch(`${URL}/shifts`);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(`Error fetching shifts: ${errorData.message}`);
@@ -164,9 +164,9 @@ export const getShifts = async (userId) => {
   }
 };
 
-export const addNewShift = async (newShift, userId) => {
+export const addNewShift = async (newShift) => {
   try {
-    const response = await fetch(`${URL}/shift/${userId}`, {
+    const response = await fetch(`${URL}/shift`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newShift),
@@ -182,9 +182,9 @@ export const addNewShift = async (newShift, userId) => {
   }
 };
 
-export const deleteShift = async (id, userId) => {
+export const deleteShift = async (id) => {
   try {
-    const response = await fetch(`${URL}/shift/${id}/${userId}`, {
+    const response = await fetch(`${URL}/shift/${id}`, {
       method: "DELETE"
     });
     if (!response.ok) {
@@ -196,10 +196,10 @@ export const deleteShift = async (id, userId) => {
 };
 
 
-export const updateShift = async (id, shift, userId) => {
+export const updateShift = async (id, shift) => {
   // export const updateShift = async (id, field, value) => {
   try {
-    const response = await fetch(`${URL}/shift/${id}/${userId}`, {
+    const response = await fetch(`${URL}/shift/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(shift),

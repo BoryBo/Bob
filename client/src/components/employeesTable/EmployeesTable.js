@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { AiOutlineUserAdd, AiOutlineUserDelete } from 'react-icons/ai';
 import { addEmployee, deleteEmployee, updateEmployee } from '../../ApiService';
+import { UserContext } from '../../context/UserContext';
 import helper from '../../helper';
 import './employeesTable.css';
 
@@ -9,15 +10,16 @@ const EmployeesTable = ({ employees, setEmployees, isLoading, error }) => {
   const [errorDeletingE, setErrorDeletingE] = useState(null);
   const [errorAddingE, setErrorAddingE] = useState(null);
   const [errorUpdatingE, setErrorUpdatingE] = useState(null);
+  const { userId } = useContext(UserContext);
 
   const handleDelete = (id) => {
-    deleteEmployee(id)
+    deleteEmployee(id, userId)
       .then(() => setEmployees(employees.filter(employee => employee.employee_id !== id)))
       .catch((error) => setErrorDeletingE({ message: error.message || 'Failed to delete employee.' }));
   };
 
   const handleAdd = () => {
-    addEmployee(newEmployee)
+    addEmployee(newEmployee, userId)
       .then(data => {
         let updatedList = [...employees, data];
         setEmployees(helper.sortByName(updatedList));
@@ -42,7 +44,7 @@ const EmployeesTable = ({ employees, setEmployees, isLoading, error }) => {
   };
 
   const handleSave = (id, field, value) => {
-    updateEmployee(id, field, value)
+    updateEmployee(id, field, value, userId)
       // .then(response => response)
       .catch(error => setErrorUpdatingE({ message: error.message || 'Failed to update employee.' }));
   };

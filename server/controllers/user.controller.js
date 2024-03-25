@@ -9,7 +9,6 @@ exports.getUser = async (req, res) => {
     });
     res.status(200).send({ id });
   } catch (error) {
-    console.log(error);
     res
       .status(401)
       .send({ message: error.message });

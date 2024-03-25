@@ -1,7 +1,8 @@
 import { UserButton } from "@clerk/clerk-react";
-import React, { useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { getEmployees, getShiftTypes, getShifts } from '../ApiService';
+import { UserContext } from '../context/UserContext';
 import helper from '../helper';
 import { useFetch } from '../hooks/useFetch';
 import Home from './Home';
@@ -12,15 +13,16 @@ import ShiftTypes from './shiftsTypes/ShiftTypes';
 
 
 function Redirect () {
+  const { userId } = useContext(UserContext);
   const {
     fetchedData: employees, setFetchedData: setEmployees, error: errorFetchingEmployees, isFetching: isLoadingEmployees
-  } = useFetch(getEmployees, []);
+  } = useFetch(getEmployees, [], userId);
   const {
     fetchedData: shiftTypes, setFetchedData: setShiftTypes, error: errorFetchingShiftTypes, isFetching: isLoadingShiftTypes
-  } = useFetch(getShiftTypes, []);
+  } = useFetch(getShiftTypes, [], userId);
   const {
     fetchedData: shifts, setFetchedData: setShifts, error: errorFetchingShifts, isFetching: isLoadingShifts
-  } = useFetch(getShifts, []);
+  } = useFetch(getShifts, [], undefined);
 
   const sortedEmployees = useMemo(() => {
     if (employees.length > 0) {

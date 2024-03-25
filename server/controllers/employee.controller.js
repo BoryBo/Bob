@@ -3,8 +3,7 @@ const db = require('../models');
 
 exports.getAllEmployees = async (req, res) => {
   try {
-    const { userId } = req.params;
-    console.log('getAllEmp ******************', userId);
+    const userId = req.params.userId;
     let employees = await db.Employee.findAll({
       where: { user_id: userId }
     });
@@ -20,8 +19,6 @@ exports.getAllEmployees = async (req, res) => {
 
 exports.addEmployee = async (req, res) => {
   try {
-    const { userId } = req.params;
-    console.log('AddEmp ******************', userId);
     if (
       req.body.name === null ||
       req.body.name.trim() === '' ||
@@ -32,6 +29,7 @@ exports.addEmployee = async (req, res) => {
     ) {
       throw new Error(' Please fill out all fields to proceed.');
     }
+    const { userId } = req.params;
     let employees = await db.Employee.findAll();
     let employeeExists = employees.filter(x => x.email === req.body.email);
     if (employeeExists.length === 0) {
@@ -44,7 +42,6 @@ exports.addEmployee = async (req, res) => {
       res
         .status(201)
         .send(newEmployee);
-
     } else {
       throw new Error(` An employee with email: ${req.body.email} already exists`);
     }
@@ -56,16 +53,13 @@ exports.addEmployee = async (req, res) => {
 };
 
 exports.deleteEmployee = async (req, res) => {
-  let id = req.params.id;
-  const { userId } = req.params;
-  console.log('DeleteEmp ******************', userId);
+  const { userId, id } = req.params;
   try {
     await db.Employee.destroy({
       where: {
         employee_id: id, user_id: userId
       }
     });
-
     res
       .status(200)
       .send(`Employee deleted successfully`);
@@ -78,19 +72,16 @@ exports.deleteEmployee = async (req, res) => {
 
 
 exports.updateEmployee = async (req, res) => {
-  let id = req.params.id;
-  const { userId } = req.params;
-  console.log('UpdateEmp ******************', userId);
+  const { userId, id } = req.params;
   try {
-    let toBeUpdatedArr = await db.Employee.findAll({
+    let toBeUpdatedArr = await db.Employee.findOne({
       where: {
         employee_id: id,
         user_id: userId
       }
     });
-    let temp = toBeUpdatedArr[0];
-    await temp.set({ ...req.body });
-    await temp.save();
+    await toBeUpdatedArr.set({ ...req.body });
+    await toBeUpdatedArr.save();
     res
       .status(200)
       .send({ message: "Employee successfully updated" });

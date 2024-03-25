@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { MdDownloadDone } from 'react-icons/md';
 import { TiDeleteOutline } from 'react-icons/ti';
 import { addNewShift, addShiftType, deleteShiftType, updateShiftType } from '../../ApiService';
+import { UserContext } from '../../context/UserContext';
 import helper from '../../helper';
 import './shiftTypes.css';
 
@@ -16,9 +17,10 @@ function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
   const [errorAddingShiftType, setErrorAddingShiftType] = useState(null);
   const [errorDeletingShiftType, setErrorDeletingShiftType] = useState(null);
   const [errorUpdatingShiftType, setErrorUpdatingShiftType] = useState(null);
+  const { userId } = useContext(UserContext);
 
   const handleDelete = (id) => {
-    deleteShiftType(id)
+    deleteShiftType(id, userId)
       .then(() => setShiftTypes(shiftTypes.filter(shift => shift.shift_type_id !== id)))
       .catch(error => setErrorDeletingShiftType({ message: error.message || 'Failed to delete shift.' }));
   };
@@ -33,7 +35,7 @@ function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
   }
 
   async function handleAdd () {
-    const newShiftTypeId = await addShiftType(newShiftType)
+    const newShiftTypeId = await addShiftType(newShiftType, userId)
       .catch(error => setErrorAddingShiftType({ message: error.message || 'Failed to add shift.' }));
     let updatedList = [...shiftTypes, newShiftTypeId];
     setShiftTypes(helper.sortByDescription(updatedList));
@@ -63,7 +65,7 @@ function ShiftTypes ({ shiftTypes, setShiftTypes, shifts, setShifts }) {
   };
 
   const handleSave = (id, field, value) => {
-    updateShiftType(id, field, value)
+    updateShiftType(id, field, value, userId)
       // .then(response => response)
       .catch(error => setErrorUpdatingShiftType({ message: error.message || 'Failed to update shift.' }));
   };

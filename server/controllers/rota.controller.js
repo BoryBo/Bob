@@ -5,14 +5,19 @@ const { shiftDuration, fakeDate } = require('../convertTime');
 
 const MAX_HOURS = 150;
 
-async function getAllShiftsWithShiftType () {
+async function getAllShiftsWithShiftType (userId) {
   try {
     let shiftsCell = await db.ShiftType.findAll({
+      where: {
+        user_id: userId
+      },
       //Eager Loading => https://sequelize.org/docs/v6/advanced-association-concepts/eager-loading/
       include: [{
         model: db.Shift,
         required: true,
-        where: { shift_type_id: { [Op.not]: null } },
+        where: {
+          shift_type_id: { [Op.not]: null },
+        },
       }],
       //https://stackoverflow.com/questions/21961818/sequelize-convert-entity-to-plain-object
       raw: true
@@ -23,9 +28,13 @@ async function getAllShiftsWithShiftType () {
   }
 };
 
-let getAllEmployees = async () => {
+let getAllEmployees = async (userId) => {
   try {
-    let employees = await db.Employee.findAll({ raw: true });
+    let employees = await db.Employee.findAll({
+      where: {
+        user_id: userId
+      }
+    });
     employees = employees
       .map(emp => ({
         employee_id: emp.employee_id,
@@ -39,13 +48,13 @@ let getAllEmployees = async () => {
   }
 };
 
-async function expandShiftsWithShiftType () {
-  let days1 = [...Array(28).keys()].reduce((acc, elem) => { return { ...acc, ...{ [elem + 1]: [] } }; }, {});
+async function expandShiftsWithShiftType (userId) {
   let days = {};
   let arrOfArrays = Array(28).fill(null).map((_, i) => (days[i + 1] = []));
   // days =>  { '1': [], '2': [], ...}
   try {
-    let shiftsWithShiftType = await getAllShiftsWithShiftType();
+
+    let shiftsWithShiftType = await getAllShiftsWithShiftType(userId);
     shiftsWithShiftType = shiftsWithShiftType
       .filter(shift => shift['shifts.people_required'] > 0)
       .map(shift => { return { ...shift, 'assignedEmployees': [] }; });
@@ -69,7 +78,7 @@ function prioritise (employees, shiftType) {
       let lastShiftDay = x.shifts.at(-1)['shifts.day_number'] + (isNewDayEnd ? 1 : 0);
       let newBegin = fakeDate(startDay, startTime);
       let oldEnd = fakeDate(lastShiftDay, lastShiftEnd);
-      var hoursDelta = (newBegin - oldEnd) / 36e5;
+      let hoursDelta = (newBegin - oldEnd) / 36e5;
       x.restedEnough = hoursDelta >= 11.5;
     } else {
       x.restedEnough = true;
@@ -84,9 +93,9 @@ function prioritise (employees, shiftType) {
 }
 
 // async function generateRandomRotas (numRotas) {
-async function generateRandomRotas () {
-  let inpDays = await expandShiftsWithShiftType();
-  let inpEmployees = await getAllEmployees();
+async function generateRandomRotas (userId) {
+  let inpDays = await expandShiftsWithShiftType(userId);
+  let inpEmployees = await getAllEmployees(userId);
   let bestRota = [];
   let numRotas = 1;
   for (let i of Array(numRotas)) {
@@ -142,7 +151,8 @@ async function generateRandomRotas () {
 
 exports.getRota = async (req, res) => {
   try {
-    let rota = await generateRandomRotas();
+    const userId = req.params.userId;
+    let rota = await generateRandomRotas(userId);
     res
       .status(200)
       .send(rota);
