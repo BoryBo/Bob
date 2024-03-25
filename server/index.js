@@ -13,16 +13,15 @@ app
   .use(cors)
   .use(express.json())
   .use(router);
+const port = process.env.PORT || 4000;
 
 (async () => {
   try {
     await db.sequelize.sync();
-    console.log(`connected to the db - ${process.env.DATABASE}`);
-    app.listen(process.env.PORT, (err) => {
+    app.listen(port, (err) => {
       if (err) {
-        console.log('err: ', err);
+        console.error('Error: ', err);
       }
-      console.log(`Server running at http://localhost:${process.env.PORT}`);
     });
   }
   catch (err) {
