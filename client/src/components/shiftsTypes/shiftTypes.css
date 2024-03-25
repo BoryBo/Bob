@@ -27,7 +27,7 @@
 }
 
 .shift-input:focus {
-  outline-color: rgb(157, 11, 179);
+  outline-color: rgb(61 168 152);
   outline-style: ridge;
   border-radius: 5px;
   padding: 10px;
