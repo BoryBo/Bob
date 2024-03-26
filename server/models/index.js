@@ -4,15 +4,9 @@ const Sequelize = require('sequelize');
 
 const db = {};
 
-const sequelize = new Sequelize(
-  process.env.DATABASE,
-  process.env.USER,
-  process.env.PASSWORD,
-  {
-    host: process.env.HOST,
-    dialect: 'postgres',
-    logging: false,
-  }
+const sequelize = new Sequelize(process.env.DB_URI, {
+  logging: false,
+}
 );
 
 db.Employee = require('./employee')(sequelize, Sequelize.DataTypes);

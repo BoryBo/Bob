@@ -2,7 +2,7 @@
 
 ## Shift Planning Web App
 
-![image](./client/public/ROBOSCRUBS.PNG)
+![image](./assets/ROBOSCRUBS.PNG)
 
 ### Overview
 
